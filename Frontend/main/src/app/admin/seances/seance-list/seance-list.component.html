@@ -1,0 +1,138 @@
+<!-- seance-list.component.html -->
+<section class="content">
+  <div class="content-block">
+    <div class="block-header">
+      <app-breadcrumb [title]="'Liste des Séances'" [items]="['Séances']" [active_item]="'Liste'"></app-breadcrumb>
+    </div>
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+          <!-- Header Section -->
+          <div class="materialTableHeader">
+            <div class="left">
+              <ul class="header-buttons-left">
+                <li class="tbl-title">
+                  <h2>Liste des Séances</h2>
+                </li>
+                <li class="tbl-search-box">
+                  <label><i class="material-icons search-icon">search</i></label>
+                  <input type="text" #filter placeholder="Filtrer..." (keyup)="applyFilter($event)" class="search-field"
+                    aria-label="Search" />
+                </li>
+              </ul>
+            </div>
+            <div class="right">
+              <ul class="tbl-export-btn">
+                <li>
+                  <button mat-icon-button routerLink="/seances/new" matTooltip="Ajouter une séance" class="col-green">
+                    <mat-icon>add_circle_outline</mat-icon>
+                  </button>
+                </li>
+                <li>
+                  <button mat-icon-button [disabled]="!selection.hasValue()" (click)="deleteSelected()"
+                    matTooltip="Supprimer sélection" class="col-red">
+                    <mat-icon>delete_outline</mat-icon>
+                  </button>
+                </li>
+                <li>
+                  <button mat-icon-button (click)="exportExcel()" matTooltip="Exporter Excel" class="col-blue">
+                    <mat-icon>file_download</mat-icon>
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Table Section -->
+          <div class="overflow-auto responsive_table">
+            <table mat-table [dataSource]="dataSource" matSort class="mat-cell advance-table">
+
+              <!-- Checkbox -->
+              <ng-container matColumnDef="select">
+                <mat-header-cell *matHeaderCellDef>
+                  <mat-checkbox (change)="masterToggle()" [checked]="selection.hasValue() && isAllSelected()"
+                    [indeterminate]="selection.hasValue() && !isAllSelected()" color="primary">
+                  </mat-checkbox>
+                </mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                  <mat-checkbox (click)="$event.stopPropagation()" (change)="selection.toggle(row)"
+                    [checked]="selection.isSelected(row)" color="primary">
+                  </mat-checkbox>
+                </mat-cell>
+              </ng-container>
+
+              <!-- Nom -->
+              <ng-container matColumnDef="nom">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Nom</mat-header-cell>
+                <mat-cell *matCellDef="let seance">{{ seance.nom }}</mat-cell>
+              </ng-container>
+
+              <!-- Horaire -->
+              <ng-container matColumnDef="horaire">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Horaire</mat-header-cell>
+                <mat-cell *matCellDef="let seance">
+                  {{ seance.horaireDebut }} - {{ seance.horaireFin }}
+                </mat-cell>
+              </ng-container>
+
+              <!-- Obligatoire -->
+
+
+              <!-- Lieu -->
+              <ng-container matColumnDef="lieu">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Lieu</mat-header-cell>
+                <mat-cell *matCellDef="let seance">{{ seance.lieu }}</mat-cell>
+              </ng-container>
+
+              <!-- Date début -->
+              <ng-container matColumnDef="startDate">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Date début</mat-header-cell>
+                <mat-cell *matCellDef="let seance">{{ seance.startDate }}</mat-cell>
+              </ng-container>
+
+              <!-- Date fin -->
+              <ng-container matColumnDef="endDate">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Date fin</mat-header-cell>
+                <mat-cell *matCellDef="let seance">{{ seance.endDate }}</mat-cell>
+              </ng-container>
+
+              <!-- Récurrence -->
+              <ng-container matColumnDef="recurrenceType">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Récurrence</mat-header-cell>
+                <mat-cell *matCellDef="let seance">
+                  {{ seance.recurrenceType | lowercase }}
+                </mat-cell>
+              </ng-container>
+
+              <!-- Classe -->
+              <ng-container matColumnDef="classe">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Classe</mat-header-cell>
+                <mat-cell *matCellDef="let seance">{{ seance.classe.nom }}</mat-cell>
+              </ng-container>
+
+              <!-- Actions -->
+              <ng-container matColumnDef="actions">
+                <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+                <mat-cell *matCellDef="let seance">
+                  <button mat-icon-button color="primary" [routerLink]="['/seances/edit', seance.id]" matTooltip="Modifier">
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                  <button mat-icon-button color="warn" (click)="deleteOne(seance)" matTooltip="Supprimer">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </mat-cell>
+              </ng-container>
+
+              <!-- Table rows -->
+              <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            </table>
+
+            <!-- Paginator -->
+            <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

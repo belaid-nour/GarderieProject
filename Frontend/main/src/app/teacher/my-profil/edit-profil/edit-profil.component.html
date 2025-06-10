@@ -1,0 +1,141 @@
+<section class="content">
+  <div class="content-block">
+    <div class="block-header">
+      <!-- Breadcrumb -->
+      <app-breadcrumb [title]="breadscrums[0].title" [items]="breadscrums[0].items" [active_item]="breadscrums[0].active">
+      </app-breadcrumb>
+    </div>
+
+    <div class="row clearfix">
+      <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+        <div class="card">
+          <div class="header">
+            <h2>Modification du profil</h2>
+          </div>
+          <div class="body">
+            <form class="m-4" [formGroup]="form" (ngSubmit)="onSubmit()">
+              <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <mat-label>Nom</mat-label>
+                    <input matInput formControlName="nom" required>
+                    <mat-error *ngIf="form.get('nom')?.hasError('required')">
+                      Ce champ est obligatoire
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <mat-label>Prénom</mat-label>
+                    <input matInput formControlName="prenom" required>
+                    <mat-error *ngIf="form.get('prenom')?.hasError('required')">
+                      Ce champ est obligatoire
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <mat-label>Téléphone</mat-label>
+                    <input matInput formControlName="telephone" pattern="[0-9]{8}">
+                    <mat-hint>Format: 8 chiffres</mat-hint>
+                    <mat-error *ngIf="form.get('telephone')?.hasError('pattern')">
+                      Numéro invalide
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <mat-label>CIN</mat-label>
+                    <input matInput formControlName="cin" pattern="[0-9]{8}">
+                    <mat-hint>8 chiffres</mat-hint>
+                    <mat-error *ngIf="form.get('cin')?.hasError('pattern')">
+                      CIN invalide
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <mat-label>Nom du conjoint</mat-label>
+                    <input matInput formControlName="nomConjoint">
+                  </mat-form-field>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <mat-label>Prénom du conjoint</mat-label>
+                    <input matInput formControlName="prenomConjoint">
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <mat-label>Téléphone du conjoint</mat-label>
+                    <input matInput formControlName="telephoneConjoint" pattern="[0-9]{8}">
+                    <mat-error *ngIf="form.get('telephoneConjoint')?.hasError('pattern')">
+                      Numéro invalide
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <mat-label>Situation Parentale</mat-label>
+                    <mat-select formControlName="situationParentale">
+                      <mat-option value="Célibataire">Célibataire</mat-option>
+                      <mat-option value="Marié(e)">Marié(e)</mat-option>
+                      <mat-option value="Divorcé(e)">Divorcé(e)</mat-option>
+                      <mat-option value="Veuf/Veuve">Veuf/Veuve</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <mat-label>Adresse</mat-label>
+                    <textarea matInput formControlName="adresse" rows="3"></textarea>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                  <button
+                    class="btn-space"
+                    mat-flat-button
+                    color="primary"
+                    type="submit"
+                    [disabled]="form.invalid || loading"
+                  >
+                    <mat-icon *ngIf="!loading">save</mat-icon>
+                    <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
+                    Enregistrer
+                  </button>
+                  <button
+                    type="button"
+                    mat-flat-button
+                    class="formCancelBtn"
+                  >
+                    Annuler
+                  </button>
+                </div>
+              </div>
+
+              <div *ngIf="errorMessage" class="error-message mt-3">
+                <mat-icon>error</mat-icon>
+                {{ errorMessage }}
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

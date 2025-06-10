@@ -1,0 +1,109 @@
+<section class="content">
+  <div class="content-block">
+    <div class="block-header">
+      <app-breadcrumb [title]="breadscrums[0].title"
+                     [items]="breadscrums[0].items"
+                     [active_item]="breadscrums[0].active">
+      </app-breadcrumb>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <div class="full-height-card">
+          <div class="card-header bg-primary text-white">
+            <div class="header-content">
+              <h1 class="mb-0">
+                <mat-icon class="me-2">family_restroom</mat-icon>
+                Dossier des Enfants
+              </h1>
+              <p class="mb-0">Gestion complète des inscriptions scolaires</p>
+            </div>
+            <button mat-flat-button
+                   color="accent"
+                   routerLink="/add-student"
+                   class="add-button">
+              <mat-icon>person_add</mat-icon> Nouvelle Inscription
+            </button>
+          </div>
+
+          <div class="card-body p-0">
+            <div class="extended-children-list" *ngIf="enfants.length > 0; else noChildren">
+              <div class="extended-child-card" *ngFor="let enfant of enfants">
+                <div class="child-avatar-section">
+                  <div class="avatar-container">
+                    <img [src]="getChildAvatar(enfant)" class="child-avatar-img">
+                    <div class="status-badge" [ngClass]="{
+                      'status-confirmed': enfant.statutConfirmation === 'CONFIRME',
+                      'status-pending': enfant.statutConfirmation === 'EN_ATTENTE',
+                      'status-rejected': enfant.statutConfirmation === 'REFUSE'
+                    }">
+                      {{ getStatutConfirmation(enfant.statutConfirmation) }}
+                    </div>
+                  </div>
+                  <div class="child-quick-actions">
+                      <mat-icon>delete</mat-icon>
+<button mat-mini-fab color="accent" [routerLink]="['/student/students/edit-student', enfant.id]">
+  <mat-icon>edit</mat-icon>
+</button>
+             
+                  </div>
+                </div>
+
+                <div class="child-info-section">
+                  <div class="child-main-info">
+                    <h2 class="child-name">{{enfant.prenom}} {{enfant.nom}}</h2>
+                    <div class="child-meta">
+                      <div class="meta-item">
+                        <mat-icon>cake</mat-icon>
+                        <span>{{enfant.dateNaissance | date: 'shortDate'}}</span>
+                      </div>
+                      <div class="meta-item">
+                        <mat-icon>school</mat-icon>
+                        <span>{{enfant.niveau || 'Classe non spécifiée'}}</span>
+                      </div>
+                      <div class="meta-item">
+                        <mat-icon>euro</mat-icon>
+                        <span>{{enfant.total | currency:'EUR'}}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="payment-status" [ngClass]="{
+                    'status-paid': getStatutPaiement(enfant.factures) === 'Payé',
+                    'status-failed': getStatutPaiement(enfant.factures) === 'Échec',
+                    'status-pending': getStatutPaiement(enfant.factures) === 'En attente'
+                  }">
+                    {{ getStatutPaiement(enfant.factures) }}
+                  </div>
+                </div>
+
+                <div class="child-actions-section">
+                  <button mat-raised-button color="primary" (click)="showDetails(enfant)">
+                    <mat-icon>zoom_in</mat-icon> Détails
+                  </button>
+
+                  <button mat-raised-button
+                         color="accent"
+                         *ngIf="enfant.statutConfirmation === 'CONFIRME' && getStatutPaiement(enfant.factures) === 'En attente'"
+                         (click)="openPaymentDialog(enfant)">
+                    <mat-icon>euro_symbol</mat-icon> Payer
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <ng-template #noChildren>
+              <div class="no-children-placeholder">
+                <img src="assets/images/empty-classroom.png" alt="Aucun enfant">
+                <h2>Aucun enfant inscrit</h2>
+                <button mat-raised-button routerLink="/add-student">
+                  <mat-icon>add</mat-icon> Première inscription
+                </button>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

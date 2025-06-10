@@ -1,0 +1,86 @@
+<section class="content">
+  <div class="content-block">
+
+    <!-- Header Breadcrumb -->
+    <div class="block-header">
+      <app-breadcrumb
+        [title]="breadscrums[0].title"
+        [items]="breadscrums[0].items"
+      >
+      </app-breadcrumb>
+    </div>
+
+    <div class="row clearfix justify-content-center">
+      <div class="col-xl-8 col-lg-10 col-md-12 col-sm-12">
+
+        <div class="card shadow">
+          <div class="header">
+            <h2 class="title">Ajouter un avertissement</h2>
+          </div>
+
+          <div class="body">
+            <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-container">
+
+              <mat-form-field appearance="outline" class="full-width mb-4">
+                <mat-label>Titre</mat-label>
+                <input matInput formControlName="titre" required />
+                <mat-error *ngIf="form.get('titre')?.hasError('required')">Le titre est requis</mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="full-width mb-4">
+                <mat-label>Description</mat-label>
+                <textarea matInput formControlName="description" required rows="4"></textarea>
+                <mat-error *ngIf="form.get('description')?.hasError('required')">La description est requise</mat-error>
+              </mat-form-field>
+
+              <div class="row">
+                <div class="col-sm-6 mb-4">
+                  <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Classe</mat-label>
+                    <mat-select formControlName="classeId" required>
+                      <mat-option *ngFor="let classe of classes" [value]="classe.id">
+                        {{ classe.nom }}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="form.get('classeId')?.hasError('required')">La classe est requise</mat-error>
+                  </mat-form-field>
+                </div>
+
+                <div class="col-sm-6 mb-4">
+                  <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Élève</mat-label>
+                    <mat-select formControlName="enfantId" required [disabled]="enfants.length === 0 || isLoadingEnfants">
+                      <mat-option *ngFor="let enfant of enfants" [value]="enfant.id">
+                        {{ enfant.nom }} {{ enfant.prenom }}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="form.get('enfantId')?.hasError('required')">L'élève est requis</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <mat-form-field appearance="outline" class="full-width mb-4">
+                <mat-label>Gravité</mat-label>
+                <mat-select formControlName="severite" required>
+                  <mat-option *ngFor="let s of severites" [value]="s">{{ s }}</mat-option>
+                </mat-select>
+                <mat-error *ngIf="form.get('severite')?.hasError('required')">La gravité est requise</mat-error>
+              </mat-form-field>
+
+              <div *ngIf="errorMessage" class="mb-3">
+                <mat-error class="error-message">{{ errorMessage }}</mat-error>
+              </div>
+
+              <div class="form-actions d-flex justify-content-end gap-3">
+                <button mat-flat-button color="primary" [disabled]="form.invalid || isSubmitting">Soumettre</button>
+                <button type="button" mat-flat-button color="warn" (click)="onCancel()">Annuler</button>
+              </div>
+
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>

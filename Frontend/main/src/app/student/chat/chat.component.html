@@ -1,0 +1,43 @@
+<section class="content">
+  <div class="content-block">
+    @for (breadscrum of breadscrums; track breadscrum) {
+      <div class="block-header">
+        <app-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items"></app-breadcrumb>
+      </div>
+    }
+
+    <div class="card p-4 shadow rounded-4 border-0 mb-5">
+      <h2 class="mb-4 text-primary fw-bold text-center">📩 Envoyer une réclamation</h2>
+
+      <form (ngSubmit)="sendMessage()" class="needs-validation" novalidate>
+        <div class="mb-4">
+          <label for="objet" class="form-label fw-semibold">Objet</label>
+          <input
+            type="text"
+            id="objet"
+            [(ngModel)]="message.objet"
+            name="objet"
+            required
+            class="form-control rounded-pill shadow-sm border-secondary-subtle"
+          />
+        </div>
+
+        <div class="mb-4">
+          <label for="message" class="form-label fw-semibold">Message</label>
+          <textarea
+            id="message"
+            [(ngModel)]="message.message"
+            name="message"
+            required
+            rows="5"
+            class="form-control rounded-3 shadow-sm border-secondary-subtle"
+          ></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100 py-2 rounded-pill shadow-sm">
+          ✉️ Envoyer
+        </button>
+      </form>
+    </div>
+  </div>
+</section>

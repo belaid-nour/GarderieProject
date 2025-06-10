@@ -1,0 +1,177 @@
+<section class="content">
+  <div class="content-block">
+    @for (breadscrum of breadscrums; track breadscrum) {
+    <div class="block-header">
+      <app-breadcrumb
+        [title]="breadscrum.title"
+        [items]="breadscrum.items"
+    >
+      </app-breadcrumb>
+    </div>
+    }
+    <div class="row clearfix">
+      <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+        <div class="card">
+          <div class="header">
+            <h2>Ajouter un professeur</h2>
+          </div>
+          <div class="body">
+            <form class="m-4" [formGroup]="proForm" (ngSubmit)="onSubmit()">
+              <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <mat-label>Prénom</mat-label>
+                    <input matInput formControlName="prenom" required>
+                    @if (proForm.get('prenom')?.hasError('required')) {
+                    <mat-error>
+                      Le prénom est requis
+                    </mat-error>
+                    }
+                    @if (proForm.get('prenom')?.hasError('pattern')) {
+                    <mat-error>
+                      Seules les lettres sont autorisées
+                    </mat-error>
+                    }
+                  </mat-form-field>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <mat-label>Nom</mat-label>
+                    <input matInput formControlName="nom" required>
+                    @if (proForm.get('nom')?.hasError('required')) {
+                    <mat-error>
+                      Le nom est requis
+                    </mat-error>
+                    }
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <mat-label>CIN (8 caractères)</mat-label>
+                    <input matInput formControlName="cin" required maxlength="8">
+                    @if (proForm.get('cin')?.hasError('required')) {
+                    <mat-error>
+                      Le CIN est requis
+                    </mat-error>
+                    }
+                    @if (proForm.get('cin')?.hasError('minlength') || proForm.get('cin')?.hasError('maxlength')) {
+                    <mat-error>
+                      Le CIN doit avoir exactement 8 caractères
+                    </mat-error>
+                    }
+                    @if (proForm.get('cin')?.hasError('pattern')) {
+                    <mat-error>
+                      Caractères alphanumériques seulement
+                    </mat-error>
+                    }
+                  </mat-form-field>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <mat-label>Téléphone (8 chiffres)</mat-label>
+                    <input matInput formControlName="telephone" type="tel" required maxlength="8">
+                    @if (proForm.get('telephone')?.hasError('required')) {
+                    <mat-error>
+                      Le téléphone est requis
+                    </mat-error>
+                    }
+                    @if (proForm.get('telephone')?.hasError('minlength') || proForm.get('telephone')?.hasError('maxlength')) {
+                    <mat-error>
+                      Le téléphone doit avoir exactement 8 chiffres
+                    </mat-error>
+                    }
+                    @if (proForm.get('telephone')?.hasError('pattern')) {
+                    <mat-error>
+                      Chiffres seulement
+                    </mat-error>
+                    }
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <mat-label>Email</mat-label>
+                    <input matInput formControlName="email" required>
+                    @if (proForm.get('email')?.hasError('required')) {
+                    <mat-error>
+                      L'email est requis
+                    </mat-error>
+                    }
+                    @if (proForm.get('email')?.hasError('email')) {
+                    <mat-error>
+                      Veuillez entrer une adresse email valide
+                    </mat-error>
+                    }
+                    @if (proForm.get('email')?.hasError('minlength')) {
+                    <mat-error>
+                      L'email doit comporter au moins 5 caractères
+                    </mat-error>
+                    }
+                  </mat-form-field>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <mat-label>Adresse</mat-label>
+                    <input matInput formControlName="adresse">
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <mat-label>Mot de passe</mat-label>
+                    <input matInput formControlName="motDePasse" type="password" required>
+                    @if (proForm.get('motDePasse')?.hasError('required')) {
+                    <mat-error>
+                      Le mot de passe est requis
+                    </mat-error>
+                    }
+                    @if (proForm.get('motDePasse')?.hasError('minlength')) {
+                    <mat-error>
+                      Le mot de passe doit comporter au moins 6 caractères
+                    </mat-error>
+                    }
+                  </mat-form-field>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <mat-label>Confirmer le mot de passe</mat-label>
+                    <input matInput formControlName="confirmationMotDePasse" type="password" required>
+                    @if (proForm.get('confirmationMotDePasse')?.hasError('required')) {
+                    <mat-error>
+                      Veuillez confirmer votre mot de passe
+                    </mat-error>
+                    }
+                    @if (proForm.hasError('nonIdentiques')) {
+                    <mat-error>
+                      Les mots de passe ne correspondent pas
+                    </mat-error>
+                    }
+                  </mat-form-field>
+                </div>
+              </div>
+              @if (errorMessage) {
+              <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                  <mat-error class="error-message">
+                    {{ errorMessage }}
+                  </mat-error>
+                </div>
+              </div>
+              }
+              <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                  <button class="btn-space" [disabled]="!proForm.valid" mat-flat-button color="primary">Soumettre</button>
+                  <button type="button" mat-flat-button class="formCancelBtn" (click)="onCancel()">Annuler</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

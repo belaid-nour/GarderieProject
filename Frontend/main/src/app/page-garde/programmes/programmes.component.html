@@ -1,0 +1,22 @@
+<section class="programmes-section" id="programmes">
+  <div class="container">
+    <div class="section-title">
+      <h2>Nos programmes éducatifs</h2>
+      <p>Des espaces adaptés à chaque étape du développement de votre enfant</p>
+    </div>
+
+    <div class="programmes-grid">
+      <div class="programme-card" *ngFor="let programme of programmes">
+        <div class="programme-image">
+          <img [src]="programme.image" [alt]="programme.title">
+        </div>
+        <div class="programme-content">
+          <span class="age-badge">{{ programme.age }}</span>
+          <h3>{{ programme.title }}</h3>
+          <p>{{ programme.description }}</p>
+          <a href="#contact" class="btn btn-outline">En savoir plus</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

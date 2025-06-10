@@ -1,0 +1,119 @@
+<section class="content">
+  <div class="content-block">
+    <div class="block-header">
+      <app-breadcrumb
+        [title]="'Gestion des Absences - Admin'"
+        [items]="['Scolarité']"
+        [active_item]="'Absences par Classe'">
+      </app-breadcrumb>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card shadow-sm">
+          <!-- Header Section -->
+          <div class="materialTableHeader">
+            <div class="left">
+              <ul class="header-buttons-left">
+                <li class="tbl-title">
+                  <h2>Absences par Classe</h2>
+                </li>
+                <li class="tbl-search-box">
+                  <label><i class="material-icons search-icon">search</i></label>
+                  <input type="text" #filter placeholder="Filtrer..." (keyup)="applyFilter($event)" class="search-field"
+                    aria-label="Search" />
+                </li>
+              </ul>
+            </div>
+            <div class="right">
+              <ul class="tbl-export-btn">
+                <li>
+                  <button mat-icon-button matTooltip="Actualiser" (click)="refresh()">
+                    <mat-icon>refresh</mat-icon>
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Table Section -->
+          <div class="card-body position-relative p-4">
+            <div *ngIf="loading" class="loading-overlay">
+              <div class="d-flex flex-column align-items-center">
+                <mat-spinner diameter="50"></mat-spinner>
+                <p class="mt-2 mb-0 text-muted">Chargement des données...</p>
+              </div>
+            </div>
+
+            <div *ngIf="!loading && errorMessage" class="alert alert-danger">
+              <mat-icon>error_outline</mat-icon>
+              {{ errorMessage }}
+            </div>
+
+            <div *ngIf="!loading && !errorMessage">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="text-primary fw-bold mb-0">
+                  Classe : {{ classeNom || 'N/A' }}
+                </h5>
+                <div class="text-muted">
+                  Total : {{ absences.length }} absence(s)
+                </div>
+              </div>
+
+              <div *ngIf="absences.length > 0" class="table-responsive">
+                <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 w-100">
+                  <!-- Enfant Column -->
+                  <ng-container matColumnDef="enfant">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Enfant</th>
+                    <td mat-cell *matCellDef="let absence">{{ absence.enfant?.prenom }} {{ absence.enfant?.nom }}</td>
+                  </ng-container>
+
+                  <!-- Date Column -->
+                  <ng-container matColumnDef="date">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+                    <td mat-cell *matCellDef="let absence">{{ absence.date | date: 'dd/MM/yyyy' }}</td>
+                  </ng-container>
+
+                  <!-- Séance Column -->
+                  <ng-container matColumnDef="seance">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Séance</th>
+                    <td mat-cell *matCellDef="let absence">{{ absence.seance?.nom || 'N/A' }}</td>
+                  </ng-container>
+
+                  <!-- Raison Column -->
+                  <ng-container matColumnDef="raison">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Raison</th>
+                    <td mat-cell *matCellDef="let absence">{{ absence.raison || 'Non spécifiée' }}</td>
+                  </ng-container>
+
+                  <!-- Justifiée Column -->
+                  <ng-container matColumnDef="justifiee">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Justifiée</th>
+                    <td mat-cell *matCellDef="let absence">
+                      <span class="badge"
+                            [ngClass]="absence.justifiee ? 'bg-success' : 'bg-warning text-dark'">
+                        {{ absence.justifiee ? 'Oui' : 'Non' }}
+                      </span>
+                    </td>
+                  </ng-container>
+
+                  <!-- Table rows -->
+                  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+
+                <!-- Paginator -->
+                <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
+              </div>
+
+              <div *ngIf="absences.length === 0" class="text-center py-4 text-muted">
+                <mat-icon class="display-4">assignment</mat-icon>
+                <h4 class="mt-2">Aucune absence enregistrée pour cette classe</h4>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

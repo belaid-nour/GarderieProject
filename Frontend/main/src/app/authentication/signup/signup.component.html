@@ -1,0 +1,250 @@
+<div class="auth-container">
+  <div class="row auth-main">
+    <div class="col-sm-6 px-0 d-none d-sm-block">
+      <div class="left-img" style="background-image: url(assets/images/pages/img1.jpg);"></div>
+    </div>
+    <div class="col-sm-6 auth-form-section">
+      <div class="form-section">
+        <div class="auth-wrapper">
+          <h6 class="welcome-msg">S'inscrire </h6>
+          <p class="auth-signup-text text-muted">Entrez les informations pour créer votre compte.</p>
+          <mat-horizontal-stepper linear #stepper>
+            <!-- ÉTAPE 1 -->
+            <mat-step [stepControl]="step1">
+              <form [formGroup]="step1">
+                <ng-template matStepLabel>Infos personnelles</ng-template> <br>
+
+                <div class="row">
+                  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                      <mat-label>Nom</mat-label>
+                      <input matInput formControlName="nom" required>
+                      <mat-icon matSuffix>face</mat-icon>
+                      <mat-error *ngIf="step1.get('nom')?.hasError('required')">Nom est obligatoire</mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                      <mat-label>Prénom</mat-label>
+                      <input matInput formControlName="prenom" required>
+                      <mat-icon matSuffix>face</mat-icon>
+                      <mat-error *ngIf="step1.get('prenom')?.hasError('required')">Prénom est obligatoire</mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                      <mat-label>Adresse</mat-label>
+                      <input matInput formControlName="adresse">
+                      <mat-icon matSuffix>home</mat-icon>
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                      <mat-label>Téléphone</mat-label>
+                      <input matInput formControlName="telephone" required type="tel" pattern="^\d{8}$">
+                      <mat-icon matSuffix>phone</mat-icon>
+                      <mat-error *ngIf="step1.get('telephone')?.hasError('required')">Téléphone est obligatoire</mat-error>
+                      <mat-error *ngIf="step1.get('telephone')?.hasError('pattern')">Le téléphone doit contenir 8 chiffres</mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                      <mat-label>CIN</mat-label>
+                      <input matInput formControlName="cin" required>
+                      <mat-icon matSuffix>badge</mat-icon>
+                      <mat-error *ngIf="step1.get('cin')?.hasError('required')">CIN est obligatoire</mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div class="stepper-actions">
+                  <button mat-stroked-button matStepperNext [disabled]="step1.invalid" class="next-button">
+                    Suivant
+                    <mat-icon>arrow_forward</mat-icon>
+                  </button>
+                </div>
+
+              </form>
+            </mat-step>
+
+            <!-- ÉTAPE 2 -->
+            <mat-step [stepControl]="step2">
+              <form [formGroup]="step2">
+                <ng-template matStepLabel>Compte</ng-template><br>
+
+                <div class="row">
+                  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                      <mat-label>Email</mat-label>
+                      <input matInput formControlName="email" required type="email">
+                      <mat-icon matSuffix>mail</mat-icon>
+                      <mat-error *ngIf="step2.get('email')?.hasError('required')">Email est obligatoire</mat-error>
+                      <mat-error *ngIf="step2.get('email')?.hasError('email')">Format d'email invalide</mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                      <mat-label>Password</mat-label>
+                      <input matInput formControlName="password" [type]="hide ? 'password' : 'text'" required>
+                      <button mat-icon-button matSuffix (click)="hide = !hide" type="button">
+                        <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+                      </button>
+                      <mat-error *ngIf="step2.get('password')?.hasError('required')">Mot de passe est obligatoire</mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
+                    <mat-form-field class="example-full-width" appearance="outline">
+                      <mat-label>Confirm Password</mat-label>
+                      <input matInput formControlName="cpassword" [type]="chide ? 'password' : 'text'" required>
+                      <button mat-icon-button matSuffix (click)="chide = !chide" type="button">
+                        <mat-icon>{{ chide ? 'visibility_off' : 'visibility' }}</mat-icon>
+                      </button>
+                      <mat-error *ngIf="step2.get('cpassword')?.hasError('required')">Confirmer le mot de passe est obligatoire</mat-error>
+                      <mat-error *ngIf="step2.get('cpassword')?.hasError('mismatch')">
+                        Les mots de passe ne correspondent pas
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div class="stepper-actions">
+                  <button mat-stroked-button matStepperPrevious class="back-button">
+                    <mat-icon>arrow_back</mat-icon>
+                    Retour
+                  </button>
+                  <button mat-raised-button color="primary" matStepperNext [disabled]="step2.invalid" class="next-button">
+                    Suivant
+                    <mat-icon>arrow_forward</mat-icon>
+                  </button>
+                </div>
+              </form>
+            </mat-step>
+
+            <!-- ÉTAPE 3 - Famille -->
+           <!-- ÉTAPE 3 - Famille -->
+<mat-step [stepControl]="step3">
+  <form [formGroup]="step3">
+    <ng-template matStepLabel>Famille</ng-template><br>
+
+    <!-- Situation Parentale - Nouvelle version avec liste déroulante -->
+    <mat-form-field appearance="outline" class="full-width-field">
+      <mat-label>Situation parentale</mat-label>
+      <mat-select formControlName="situationParentale">
+        <mat-option *ngFor="let situation of situationsParentales" [value]="situation.value">
+          {{situation.viewValue}}
+        </mat-option>
+      </mat-select>
+      <mat-icon matSuffix>family_restroom</mat-icon>
+    </mat-form-field>
+
+    <!-- Section d'information -->
+    <div class="info-card" *ngIf="!showConjoint">
+      <mat-icon class="info-icon">info_outline</mat-icon>
+      <div class="info-content">
+        <p class="info-text">
+          Pour enregistrer les informations de votre conjoint,<br>
+          veuillez cliquer sur le bouton ci-dessous.
+        </p>
+      </div>
+    </div>
+
+    <!-- Bouton Ajouter Conjoint -->
+    <div class="add-conjoint-btn-container">
+      <button mat-stroked-button
+              color="primary"
+              (click)="showConjoint = !showConjoint"
+              class="add-conjoint-btn">
+        <mat-icon>{{ showConjoint ? 'remove' : 'add' }}</mat-icon>
+        {{ showConjoint ? 'Masquer conjoint' : 'Ajouter conjoint' }}
+      </button>
+    </div>
+
+    <!-- Section Conjoint - Apparaît dynamiquement -->
+    <div *ngIf="showConjoint" @slideInAnimation class="conjoint-section">
+      <div class="conjoint-row">
+        <!-- Nom et Prénom sur la même ligne -->
+        <mat-form-field appearance="outline" class="conjoint-field">
+          <mat-label>Nom</mat-label>
+          <input matInput formControlName="nomConjoint">
+          <mat-icon matSuffix>badge</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="conjoint-field">
+          <mat-label>Prénom</mat-label>
+          <input matInput formControlName="prenomConjoint">
+          <mat-icon matSuffix>person</mat-icon>
+        </mat-form-field>
+      </div>
+
+      <!-- Téléphone en dessous -->
+      <mat-form-field appearance="outline" class="full-width-field">
+        <mat-label>Téléphone</mat-label>
+        <input matInput formControlName="telephoneConjoint" type="tel" pattern="^\d{8}$">
+        <mat-icon matSuffix>phone</mat-icon>
+      </mat-form-field>
+    </div>
+
+    <!-- Navigation -->
+    <div class="stepper-actions">
+      <button mat-stroked-button matStepperPrevious>
+        <mat-icon>arrow_back</mat-icon>
+        Retour
+      </button>
+      <button mat-raised-button color="primary" matStepperNext>
+        Suivant
+        <mat-icon>arrow_forward</mat-icon>
+      </button>
+    </div>
+  </form>
+</mat-step>
+
+            <!-- ÉTAPE 4 -->
+            <mat-step>
+              <ng-template matStepLabel>Confirmation</ng-template><br>
+
+              <div class="confirmation-container">
+                <h4 class="confirmation-title">Vérification finale</h4>
+                <p class="confirmation-text">Veuillez vérifier vos informations avant de soumettre votre inscription.</p>
+
+                <div class="button-group">
+                  <button mat-stroked-button matStepperPrevious class="back-button">
+                    <mat-icon>arrow_back</mat-icon>
+                    Retour
+                  </button>
+                  <button mat-raised-button color="primary" (click)="onSubmit()" class="submit-button">
+                    <mat-icon>how_to_reg</mat-icon>
+                    S'inscrire
+                  </button>
+                </div>
+              </div>
+            </mat-step>
+
+          </mat-horizontal-stepper>
+          <h6 class="social-login-title">OR</h6>
+          <div class="already-account">
+            <span>Vous avez déjà un compte ?</span>
+            <a routerLink="/authentication/signin" class="login-link">Se connecter</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

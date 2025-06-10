@@ -1,0 +1,157 @@
+/* Styles généraux pour toute la page */
+.content {
+  padding: 2rem;
+  background-color: #f0f9ff; /* Bleu ciel clair */
+  min-height: calc(100vh - 64px);
+}
+
+/* Header */
+.header-container {
+  background: #89a6df5a; /* Bleu ciel */
+  color: rgb(24, 2, 50);
+  padding: 1rem 2rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
+
+.header-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header-icon {
+  font-size: 1.5rem;
+}
+
+.header-subtitle {
+  font-size: 1.2rem;
+  font-weight: 400;
+}
+
+/* Table Container */
+.table-container {
+  overflow-x: auto;
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.mat-header-cell, .mat-cell {
+  padding: 20px;
+  text-align: left;
+  font-size: 1.1rem;
+  border-bottom: 1px solid #ddd;
+}
+
+.mat-header-cell {
+  background-color: #e1f5fe; /* Bleu très clair */
+  font-weight: bold;
+}
+
+.mat-cell {
+  background-color: #fafafa;
+}
+
+/* Form fields (commentaires) */
+.mat-form-field {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.mat-form-field-wrapper {
+  padding-bottom: 0;
+}
+
+.mat-form-field-outline {
+  background-color: white;
+  border-radius: 8px;
+}
+
+textarea {
+  font-size: 1.1rem;
+  padding: 12px;
+  border-radius: 8px;
+  resize: none;
+  background-color: #f1f8fe;
+}
+
+/* Buttons */
+button.mat-raised-button {
+  padding: 12px 36px;
+  background-color: #4fc3f7; /* Bleu ciel */
+  color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+button.mat-raised-button:hover {
+  background-color: #03a9f4;
+}
+
+button.mat-icon-button {
+  color: #e57373; /* Rouge pour l'icône delete */
+}
+
+button.mat-icon-button:hover {
+  background-color: rgba(255, 87, 34, 0.1);
+}
+
+/* Spinner de chargement */
+.loading-spinner {
+  margin: 3rem auto;
+}
+
+/* Message d'erreur */
+.error-message {
+  color: #e57373;
+  background-color: #f8d7da;
+  padding: 1rem;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 2rem;
+}
+
+.error-message mat-icon {
+  font-size: 1.5rem;
+}
+
+/* Footer */
+.footer-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 2rem;
+}
+
+.footer-container button {
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Ajout d'un fond pour les lignes */
+.mat-row {
+  transition: background-color 0.3s;
+}
+
+.mat-row:hover {
+  background-color: #e3f2fd; /* Bleu clair en survol */
+}
+
+/* Ajout d'une bordure arrondie pour les éléments */
+.table-container, .footer-container {
+  border-radius: 12px;
+}
+

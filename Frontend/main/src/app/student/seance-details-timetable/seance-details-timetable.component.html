@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Emploi du temps</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #3f51b5;
+      --primary-light: #e8eaf6;
+      --primary-dark: #303f9f;
+      --success: #4caf50;
+      --warning: #ff9800;
+      --danger: #f44336;
+      --gray-100: #f8f9fa;
+      --gray-200: #e9ecef;
+      --gray-300: #dee2e6;
+      --gray-600: #6c757d;
+      --gray-800: #343a40;
+      --text-dark: #212529;
+      --text-light: #f8f9fa;
+      --shadow-sm: 0 2px 4px rgba(0,0,0,0.1);
+      --shadow-md: 0 4px 8px rgba(0,0,0,0.1);
+      --shadow-lg: 0 8px 16px rgba(0,0,0,0.1);
+      --border-radius: 8px;
+      --border-radius-lg: 12px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    body {
+      background-color: #f5f7fb;
+      color: var(--text-dark);
+      line-height: 1.6;
+      padding: 20px;
+    }
+
+    .full-height-card {
+      background: white;
+      border-radius: var(--border-radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .card-header {
+      padding: 1.5rem;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+    }
+
+    .header-content h1 {
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      font-size: 1.75rem;
+    }
+
+    .card-body {
+      padding: 2rem;
+      position: relative;
+      min-height: 500px;
+    }
+
+    .loading-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255, 255, 255, 0.85);
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    .alert {
+      padding: 1rem;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      background: #fef2f2;
+      color: #b91c1c;
+      margin-bottom: 1.5rem;
+    }
+
+    .timetable-controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+      background: #f8f9fa;
+      padding: 0.75rem;
+      border-radius: 8px;
+    }
+
+    .current-week {
+      font-weight: 600;
+      margin: 0 1rem;
+      min-width: 250px;
+      text-align: center;
+      font-size: 1.1rem;
+    }
+
+    .timetable-container {
+      margin-bottom: 2.5rem;
+    }
+
+    .classe-title {
+      color: var(--primary);
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 2px solid #f0f0f0;
+      font-weight: 600;
+    }
+
+    .timetable-grid {
+      display: grid;
+      grid-template-columns: 80px 1fr;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .time-axis {
+      background-color: #f8f9fa;
+    }
+
+    .time-label {
+      height: 60px;
+      border-bottom: 1px solid #e0e0e0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      background: #f0f0f0;
+    }
+
+    .time-slot {
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      color: #666;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .days-container {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+    }
+
+    .day-column {
+      border-right: 1px solid #e0e0e0;
+    }
+
+    .day-header {
+      height: 60px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #f0f0f0;
+      font-weight: 600;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .day-date {
+      font-size: 0.9rem;
+      color: var(--primary);
+      font-weight: normal;
+      margin-top: 0.25rem;
+    }
+
+    .time-cell {
+      height: 60px;
+      position: relative;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .seance-card {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      right: 2px;
+      bottom: 2px;
+      background: white;
+      border-radius: 6px;
+      border-left: 4px solid var(--primary);
+      padding: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      overflow: hidden;
+      z-index: 2;
+    }
+
+    .seance-title {
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--primary);
+      margin-bottom: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .seance-details {
+      display: flex;
+      align-items: center;
+      font-size: 12px;
+      color: #555;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .seance-icon {
+      font-size: 16px;
+      width: 16px;
+      height: 16px;
+      margin-right: 4px;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 3rem;
+      color: #6c757d;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+    }
+
+    .btn-icon {
+      background: transparent;
+      border: none;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <section class="content">
+    <div class="content-block">
+      <!-- Carte principale -->
+      <div class="full-height-card">
+        <!-- En-tête de la carte -->
+        <div class="card-header bg-primary text-white">
+          <div class="header-content">
+            <h1 class="mb-0">
+              <i class="material-icons me-2">schedule</i>
+              Emploi du temps
+            </h1>
+            <p class="mb-0">Planning des activités scolaires</p>
+          </div>
+        </div>
+
+        <!-- Contenu principal -->
+        <div class="card-body">
+          <div class="timetable-controls">
+            <button class="btn-icon">
+              <i class="material-icons">chevron_left</i>
+            </button>
+            <span class="current-week">
+              Semaine du 10/06/2024 au 14/06/2024
+            </span>
+            <button class="btn-icon">
+              <i class="material-icons">chevron_right</i>
+            </button>
+            <button class="btn-primary ms-3">
+              <i class="material-icons me-1">today</i>
+              Aujourd'hui
+            </button>
+          </div>
+
+          <!-- Exemple avec données -->
+          <div class="timetable-container">
+            <div class="enfant-section">
+              <h2 class="classe-title">
+                CP - Sophie Martin
+              </h2>
+
+              <div class="timetable-grid">
+                <!-- Colonne des heures -->
+                <div class="time-axis">
+                  <div class="time-label">Heure</div>
+                  <div class="time-slot">08:00</div>
+                  <div class="time-slot">08:30</div>
+                  <div class="time-slot">09:00</div>
+                  <div class="time-slot">09:30</div>
+                  <div class="time-slot">10:00</div>
+                  <div class="time-slot">10:30</div>
+                  <div class="time-slot">11:00</div>
+                  <div class="time-slot">11:30</div>
+                  <div class="time-slot">12:00</div>
+                  <div class="time-slot">12:30</div>
+                  <div class="time-slot">13:00</div>
+                  <div class="time-slot">13:30</div>
+                  <div class="time-slot">14:00</div>
+                  <div class="time-slot">14:30</div>
+                  <div class="time-slot">15:00</div>
+                  <div class="time-slot">15:30</div>
+                  <div class="time-slot">16:00</div>
+                  <div class="time-slot">16:30</div>
+                  <div class="time-slot">17:00</div>
+                </div>
+
+                <!-- Colonnes des jours -->
+                <div class="days-container">
+                  <!-- Lundi -->
+                  <div class="day-column">
+                    <div class="day-header">
+                      Lundi<br>
+                      <span class="day-date">10/06</span>
+                    </div>
+                    <div class="time-cell"></div>
+                    <div class="time-cell"></div>
+                    <div class="time-cell">
+                      <div class="seance-card" style="top: 0; bottom: 0;">
+                        <div class="seance-content">
+                          <div class="seance-title">Mathématiques</div>
+                          <div class="seance-details">
+                            <i class="material-icons seance-icon">access_time</i>
+                            09:00 - 10:00
+                          </div>
+                          <div class="seance-details">
+                            <i class="material-icons seance-icon">location_on</i>
+                            Salle 201
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="time-cell"></div>
+                    <div class="time-cell"></div>
+                    <div class="time-cell">
+                      <div class="seance-card" style="top: 0; height: 120px;">
+                        <div class="seance-content">
+                          <div class="seance-title">Français</div>
+                          <div class="seance-details">
+                            <i class="material-icons seance-icon">access_time</i>
+                            10:30 - 12:00
+                          </div>
+                          <div class="seance-details">
+                            <i class="material-icons seance-icon">location_on</i>
+                            Salle 203
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="time-cell"></div>
+                    <div class="time-cell"></div>
+                    <div class="time-cell"></div>
+                    <div class="time-cell">
+                      <div class="seance-card" style="top: 0; height: 120px;">
+                        <div class="seance-content">
+                          <div class="seance-title">Sciences</div>
+                          <div class="seance-details">
+                            <i class="material-icons seance-icon">access_time</i>
+                            13:30 - 15:00
+                          </div>
+                          <div class="seance-details">
+                            <i class="material-icons seance-icon">location_on</i>
+                            Laboratoire
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="time-cell"></div>
+                    <div class="time-cell"></div>
+                    <div class="time-cell"></div>
+                    <div class="time-cell"></div>
+                    <div class="time-cell"></div>
+                    <div class="time-cell"></div>
+                  </div>
+
+                  <!-- Mardi -->
+                  <div class="day-column">
+                    <div class="day-header">
+                      Mardi<br>
+                      <span class="day-date">11/06</span>
+                    </div>
+                    <div class="time-cell"></div>
+                    <div class="time-cell"></div>
+                    <div class="time-cell">
+                      <div class="seance-card" style="top: 0; height: 180px;">
+                        <div class="seance-content">
+                          <div class="seance-title">Histoire-Géo</div>
+                          <div class="seance-details">
+                            <i class="material-icons seance-icon">access_time</i>
+                            09:00 - 11:00
+                          </div>
+                          <div class="seance-details">
+                            <i class="material-icons seance-icon">location_on</i>
+                            Salle 205
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="time-cell"></div>
+                    <div class="time-cell"></div>
+                    <div class="time-cell"></div>
+                    <div class="time-cell"></div>
+                    <div class="time-cell"></div>
+                    <div class="time-cell"></div>
+                    <div class="time-cell">
+                      <div class="seance-card" style="top: 0; height: 120px;">
+                        <div class="seance-content">
+                          <div class="seance-title">Musique</div>
+                          <div class="seance-details">
+                            <i class="material-icons seance-icon">access_time</i>
+                            13:00 - 14:30
+                          </div>
+                          <div class="seance-details">
+                            <i class="material-icons seance-icon">location_on</i>
+                            Salle de musique
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="time-cell"></div>
+                    <div class="time-cell"></div>
+                    <div class="time-cell"></div>
+                    <div class="time-cell"></div>
+                    <div class="time-cell"></div>
+                    <div class="time-cell"></div>
+                    <div class="time-cell"></div>
+                  </div>
+
+                  <!-- Mercredi -->
+                  <div class="day-column">
+                    <div class="day-header">
+                      Mercredi<br>
+                      <span class="day-date">12/06</span>
+                    </div>
+                    <div class="time-cell"></div>
+                    <div class="time-cell"></div>
+                    <div class="time-cell"></div>
+                    <div class="time-cell"></div>
+                    <div class="time-cell">
+                      <div class="seance-card" style="top: 0; height: 120px;">
+                        <div class="seance-content">
+                          <div class="seance-title">Anglais</div>
+                          <div class="seance-details">
+                            <i class="material-icons seance-icon">access_time</i>
+                            10:00 - 11:30
+                          </div>
+                          <div class="seance-details">
+                            <i class="material-icons seance-icon">location_on</i>
+                            Salle 202
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="time-cell"></div>
+                    <div class="time-cell"></div>
+                    <div class="time-cell"></div>
+                    <div class="time-cell"></div>
+                    <div class="time-cell"></div>
+                    <div class="time-cell"></div>
+                    <div class="time-cell"></div>
+                    <div class="time-cell"></div>
+                    <div class="time-cell"></div>
+                    <div class="time-cell"></div>
+                    <div class="time-cell"></div>
+                    <div class="time-cell"></div>
+                  </div>
+
+                  <!-- Jeudi -->
+                  <div class="day-column">
+                    <div class="day-header">
+                      Jeudi<br>
+                      <span class="day-date">13/06</span>
+                    </div>
+                    <div class="time-cell"></div>
+                    <div class="time-cell"></div>
+                    <div class="time-cell">
+                      <div class="seance-card" style="top: 0; height: 120px;">
+                        <div class="seance-content">
+                          <div class="seance-title">Mathématiques</div>
+                          <div class="seance-details">
+                            <i class="material-icons seance-icon">access_time</i>
+                            09:00 - 10:30
+                          </div>
+                          <div class="seance-details">
+                            <i class="material-icons seance-icon">location_on</i>
+                            Salle 201
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="time-cell"></div>
+                    <div class="time-cell">
+                      <div class="seance-card" style="top: 0; height: 120px;">
+                        <div class="seance-content">
+                          <div class="seance-title">Sport</div>
+                          <div class="seance-details">
+                            <i class="material-icons seance-icon">access_time</i>
+                            11:00 - 12:30
+                          </div>
+                          <div class="seance-details">
+                            <i class="material-icons seance-icon">location_on</i>
+                            Gymnase
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="time-cell"></div>
+                    <div class="time-cell"></div>
+                    <div class="time-cell"></div>
+                    <div class="time-cell">
+                      <div class="seance-card" style="top: 0; height: 180px;">
+                        <div class="seance-content">
+                          <div class="seance-title">Arts plastiques</div>
+                          <div class="seance-details">
+                            <i class="material-icons seance-icon">access_time</i>
+                            14:00 - 16:00
+                          </div>
+                          <div class="seance-details">
+                            <i class="material-icons seance-icon">location_on</i>
+                            Atelier d'art
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="time-cell"></div>
+                    <div class="time-cell"></div>
+                    <div class="time-cell"></div>
+                    <div class="time-cell"></div>
+                    <div class="time-cell"></div>
+                    <div class="time-cell"></div>
+                  </div>
+
+                  <!-- Vendredi -->
+                  <div class="day-column">
+                    <div class="day-header">
+                      Vendredi<br>
+                      <span class="day-date">14/06</span>
+                    </div>
+                    <div class="time-cell"></div>
+                    <div class="time-cell"></div>
+                    <div class="time-cell">
+                      <div class="seance-card" style="top: 0; height: 180px;">
+                        <div class="seance-content">
+                          <div class="seance-title">Français</div>
+                          <div class="seance-details">
+                            <i class="material-icons seance-icon">access_time</i>
+                            09:00 - 11:00
+                          </div>
+                          <div class="seance-details">
+                            <i class="material-icons seance-icon">location_on</i>
+                            Salle 203
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="time-cell"></div>
+                    <div class="time-cell"></div>
+                    <div class="time-cell"></div>
+                    <div class="time-cell"></div>
+                    <div class="time-cell"></div>
+                    <div class="time-cell"></div>
+                    <div class="time-cell">
+                      <div class="seance-card" style="top: 0; height: 120px;">
+                        <div class="seance-content">
+                          <div class="seance-title">SVT</div>
+                          <div class="seance-details">
+                            <i class="material-icons seance-icon">access_time</i>
+                            13:30 - 15:00
+                          </div>
+                          <div class="seance-details">
+                            <i class="material-icons seance-icon">location_on</i>
+                            Laboratoire
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="time-cell"></div>
+                    <div class="time-cell"></div>
+                    <div class="time-cell"></div>
+                    <div class="time-cell"></div>
+                    <div class="time-cell"></div>
+                    <div class="time-cell"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // Simulation des fonctionnalités Angular
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('Emploi du temps chargé avec succès');
+
+      // Navigation entre les semaines
+      document.querySelectorAll('.btn-icon').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const direction = this.querySelector('i').textContent === 'chevron_left' ? -1 : 1;
+          alert(`Navigation vers la semaine ${direction > 0 ? 'suivante' : 'précédente'}`);
+        });
+      });
+
+      // Bouton "Aujourd'hui"
+      document.querySelector('.btn-primary').addEventListener('click', function() {
+        alert("Retour à la semaine en cours");
+      });
+    });
+  </script>
+</body>
+</html>

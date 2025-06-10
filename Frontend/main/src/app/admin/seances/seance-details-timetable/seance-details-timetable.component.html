@@ -1,0 +1,127 @@
+<!-- seance-list.component.html -->
+<section class="content">
+  <div class="content-block">
+    <div class="block-header">
+      <app-breadcrumb [title]="'Liste des Séances'" [items]="['Séances']" [active_item]="'Liste'"></app-breadcrumb>
+    </div>
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+
+      </div>
+    </div>
+
+    <!-- En-tête avec filtre -->
+    <div class="timetable-header">
+      <div class="header-top">
+        <h1 class="timetable-title">Emploi du temps</h1>
+        <div class="date-navigation">
+          <button class="nav-button" (click)="previousWeek()">
+            <i class="fas fa-chevron-left"></i>
+          </button>
+          <button class="nav-button" (click)="nextWeek()">
+            <i class="fas fa-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="control-panel">
+        <div class="search-group">
+          <i class="search-icon fas fa-search"></i>
+          <input type="text"
+                 [(ngModel)]="searchTerm"
+                 class="search-input"
+                 placeholder="Rechercher...">
+        </div>
+
+        <div class="filter-group">
+          <select [(ngModel)]="sortOrder" class="filter-select">
+            <option value="asc">A-Z</option>
+            <option value="desc">Z-A</option>
+          </select>
+          <input type="date"
+                 [value]="selectedDate | date:'yyyy-MM-dd'"
+                 (change)="handleDateChange($event)"
+                 class="date-picker">
+        </div>
+      </div>
+    </div>
+
+    <!-- Corps du timetable -->
+    <div class="timetable-body">
+      <div *ngFor="let classe of filteredClasses" class="class-section">
+        <!-- En-tête de classe -->
+        <div class="class-header">
+          <div class="class-info">
+            <h3 class="class-name">{{ classe.nom }}</h3>
+            <span class="class-schedule">{{ getClassSchedule(classe) }}</span>
+          </div>
+          <div class="class-actions">
+            <button class="icon-button">
+              <i class="fas fa-print"></i>
+            </button>
+            <button class="icon-button">
+              <i class="fas fa-download"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Grille horaire -->
+        <div class="time-grid">
+          <!-- Colonne des heures -->
+          <div class="time-axis">
+            <div *ngFor="let time of generateTimeSlots()"
+                 class="time-slot">
+              {{ time }}
+            </div>
+          </div>
+
+          <!-- Colonnes des jours -->
+          <div class="days-container">
+            <div *ngFor="let day of weekDays" class="day-column">
+              <div class="day-header">
+                <div class="day-name">{{ day.date | date:'EEE' }}</div>
+                <div class="day-date">{{ day.date | date:'dd/MM' }}</div>
+              </div>
+
+              <div class="time-cells">
+                <div *ngFor="let time of generateTimeSlots()"
+                     class="time-cell"
+                     [class.has-seance]="hasSeanceAtTime(classe.id, day.date, time)">
+
+                  <div *ngFor="let seance of getSeancesAtTime(classe.id, day.date, time)"
+                       class="seance-card"
+                       [class.active]="selectedSeance?.id === seance.id"
+                       (click)="toggleSeance(seance)">
+
+                    <div class="seance-content">
+                      <div class="seance-header">
+                        <span class="seance-title">{{ seance.nom }}</span>
+                        <i class="seance-icon fas fa-info-circle"></i>
+                      </div>
+                      <div class="seance-time">
+                        <i class="fas fa-clock"></i>
+                        {{ seance.horaireDebut }} - {{ seance.horaireFin }}
+                      </div>
+                      <div class="seance-location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        {{ seance.lieu }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Message vide -->
+    <div *ngIf="filteredClasses.length === 0"
+         class="empty-state">
+      <i class="empty-icon fas fa-calendar-times"></i>
+      <h3>Aucun cours trouvé</h3>
+      <p>Aucun résultat pour "{{ searchTerm }}"</p>
+    </div>
+  </div>

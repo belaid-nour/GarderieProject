@@ -1,0 +1,254 @@
+/* Étape d'en-tête du stepper */
+::ng-deep .mat-step-header {
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 4px;
+
+  .mat-step-icon {
+    background-color: #6c89b5;
+    color: #fff;
+    font-weight: 600;
+    width: 28px;
+    height: 28px;
+    font-size: 13px;
+    line-height: 28px;
+  }
+
+  &.mat-active .mat-step-icon {
+    background-color: #6b6b6b;
+  }
+
+  .mat-step-label {
+    margin-top: 4px;
+    font-size: 11px;
+    color: #666;
+    font-weight: 500;
+    max-width: 80px;
+    line-height: 1.1;
+    white-space: pre-line; /* Pour forcer les sauts de ligne */
+
+    /* Pour forcer le label à être en colonne */
+    display: inline-block;
+    text-align: center;
+  }
+}
+
+/* Section pour l'option "déjà un compte" */
+.already-account {
+  text-align: center; /* Centrage du texte */
+  margin: 15px 0; /* Marge verticale */
+
+  span, .login-link {
+    font-weight: bold; /* Texte en gras */
+  }
+
+  .login-link {
+    color: #3f51b5; /* Couleur bleue Material */
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+/* Confirmation container */
+.confirmation-container {
+  padding: 24px;
+  text-align: center;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.confirmation-title {
+  color: #3f51b5; /* Couleur primaire Material */
+  margin-bottom: 16px;
+  font-weight: 500;
+}
+
+.confirmation-text {
+  color: #616161; /* Gris moyen */
+  margin-bottom: 32px;
+  line-height: 1.6;
+}
+
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 24px;
+
+  .back-button {
+    border-color: #3f51b5;
+    color: #3f51b5;
+    padding: 0 24px;
+    min-width: 120px;
+
+    mat-icon {
+      margin-right: 8px;
+      font-size: 18px;
+      height: 18px;
+      width: 18px;
+    }
+  }
+
+  .submit-button {
+    padding: 0 24px;
+    min-width: 120px;
+
+    mat-icon {
+      margin-right: 8px;
+      font-size: 18px;
+      height: 18px;
+      width: 18px;
+    }
+  }
+}
+
+/* Champ Situation Parentale */
+.full-width-field {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+/* Carte d'information */
+.info-card {
+  display: flex;
+  background: #f8fbff;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 0 0 20px 0;
+  border-left: 4px solid #3f51b5;
+  align-items: center;
+
+  .info-icon {
+    color: #3f51b5;
+    margin-right: 12px;
+    font-size: 20px;
+  }
+
+  .info-text {
+    color: #455a64;
+    margin: 0;
+    line-height: 1.5;
+    font-size: 14px;
+  }
+}
+
+/* Bouton Ajouter Conjoint */
+.add-conjoint-btn-container {
+  margin: 0 0 20px 0;
+  text-align: center;
+}
+
+.add-conjoint-btn {
+  border-radius: 20px;
+  padding: 0 24px;
+  mat-icon {
+    margin-right: 8px;
+  }
+}
+
+/* Section Conjoint */
+.conjoint-section {
+  margin: 20px 0;
+  background: #f5f8ff;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.conjoint-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+
+  .conjoint-field {
+    flex: 1;
+  }
+}
+
+/* Navigation */
+.stepper-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 24px;
+  button {
+    min-width: 120px;
+    mat-icon {
+      font-size: 18px;
+    }
+  }
+}
+
+/* Animation */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.slideInAnimation {
+  animation: slideIn 0.3s ease-out;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .conjoint-row {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .info-card {
+    flex-direction: column;
+    text-align: center;
+    .info-icon {
+      margin: 0 0 8px 0;
+    }
+  }
+}
+
+/* Customisation de SweetAlert */
+.custom-swal-popup {
+  font-family: 'Roboto', sans-serif;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.custom-confirm-btn {
+  background-color: #6a1b9a;
+  color: white;
+  font-size: 16px;
+}
+
+.custom-error-btn {
+  background-color: #d32f2f;
+  color: white;
+  font-size: 16px;
+}
+
+.custom-cancel-btn {
+  background-color: #bdbdbd;
+  color: white;
+  font-size: 16px;
+}
+
+/* Formulaire Mat */
+.mat-form-field-label {
+  color: #6a1b9a;
+}
+
+.mat-form-field .mat-error {
+  color: #d32f2f; /* Rouge pour les erreurs */
+}
+
+.mat-form-field .mat-error.mat-visible {
+  display: block; /* Affichage des erreurs */
+  font-size: 12px;
+  margin-top: 5px;
+}

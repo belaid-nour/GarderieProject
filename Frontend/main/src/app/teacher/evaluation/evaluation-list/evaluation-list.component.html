@@ -1,0 +1,80 @@
+<!-- evaluation-list.component.html -->
+<section class="content">
+  <div class="content-block">
+    <div class="block-header">
+      <app-breadcrumb
+        [title]="'Gestion des Évaluations'"
+        [items]="['Dashboard', 'Séances', 'Évaluations']"
+        [active_item]="'Liste'">
+      </app-breadcrumb>
+    </div>
+  </div>
+
+  <section class="evaluation-container">
+    <div class="header-container">
+      <h2 class="header-title">
+        <mat-icon class="header-icon">school</mat-icon> Évaluations - {{ seance.nom }}
+      </h2>
+      <h3 class="header-subtitle">
+        {{ seance.date | date:'dd/MM/yyyy' }} |
+        Classe : {{ seance.classe.nom }}
+      </h3>
+    </div>
+
+    <mat-spinner *ngIf="isLoading" class="loading-spinner"></mat-spinner>
+
+    <div *ngIf="errorMessage" class="error-message">
+      <mat-icon color="warn">error</mat-icon> {{ errorMessage }}
+    </div>
+
+    <div class="table-container" *ngIf="!isLoading && !errorMessage">
+      <table mat-table [dataSource]="evaluations">
+        <!-- Nom Column -->
+        <ng-container matColumnDef="nom">
+          <th mat-header-cell *matHeaderCellDef class="table-header">Nom</th>
+          <td mat-cell *matCellDef="let e">{{ e.enfant.nom }}</td>
+        </ng-container>
+
+        <!-- Prénom Column -->
+        <ng-container matColumnDef="prenom">
+          <th mat-header-cell *matHeaderCellDef class="table-header">Prénom</th>
+          <td mat-cell *matCellDef="let e">{{ e.enfant.prenom }}</td>
+        </ng-container>
+
+        <!-- Commentaire Column -->
+        <ng-container matColumnDef="commentaire">
+          <th mat-header-cell *matHeaderCellDef class="table-header">Commentaire</th>
+          <td mat-cell *matCellDef="let e">
+            <mat-form-field appearance="outline" class="wide-input">
+              <textarea matInput
+                        [(ngModel)]="e.commentaire"
+                        (change)="onEvaluationChange(e)"
+                        rows="3"
+                        placeholder="Saisissez votre commentaire"></textarea>
+            </mat-form-field>
+          </td>
+        </ng-container>
+
+        <!-- Actions Column -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef class="table-header">Actions</th>
+          <td mat-cell *matCellDef="let e">
+            <button mat-icon-button color="warn" (click)="deleteEvaluation(e)" class="action-button">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+
+    <div class="footer-container">
+      <button mat-raised-button color="primary" (click)="confirmExit()">
+        <mat-icon>save</mat-icon>
+        Confirmer et Quitter
+      </button>
+    </div>
+  </section>
+</section>

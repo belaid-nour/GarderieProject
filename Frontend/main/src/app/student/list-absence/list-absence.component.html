@@ -1,0 +1,132 @@
+<section class="content">
+  <div class="content-block">
+    <div class="block-header">
+      <app-breadcrumb
+        [title]="'Gestion des Absences'"
+        [items]="['Scolarité']"
+        [active_item]="'Absences'">
+      </app-breadcrumb>
+    </div>
+
+    <!-- Dashboard Header -->
+    <div class="dashboard-header">
+      <div class="summary-card">
+        <div class="summary-icon">
+          <mat-icon>assignment_ind</mat-icon>
+        </div>
+        <div class="summary-content">
+          <h2>Gestion des Absences</h2>
+          <p>Suivi détaillé des absences de vos enfants</p>
+        </div>
+      </div>
+
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-value">{{ totalAbsences }}</div>
+          <div class="metric-label">Absences totales</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-value">{{ justificationRate | percent:'1.0-1' }}</div>
+          <div class="metric-label">Taux de justification</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-value">{{ enfantsAbsences.length }}</div>
+          <div class="metric-label">Enfants suivis</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="absence-container">
+      <!-- Loading State -->
+      <div *ngIf="loading" class="loading-state">
+        <mat-spinner diameter="50"></mat-spinner>
+        <p>Chargement des données...</p>
+      </div>
+
+      <!-- Error State -->
+      <div *ngIf="!loading && errorMessage" class="error-state">
+        <mat-icon>error_outline</mat-icon>
+        <h3>Erreur de chargement</h3>
+        <p>{{ errorMessage }}</p>
+          <mat-icon>refresh</mat-icon>
+          Réessayer
+      </div>
+
+      <!-- Content -->
+      <div *ngIf="!loading && !errorMessage">
+        <div *ngFor="let item of enfantsAbsences" class="child-section">
+          <div class="child-header">
+            <div class="child-info">
+              <mat-icon class="child-icon">person</mat-icon>
+              <div>
+                <h3>{{ item.enfant.prenom }} {{ item.enfant.nom }}</h3>
+                <div class="child-meta">
+                  <span class="badge">
+                    <mat-icon>school</mat-icon>
+                    {{ item.enfant.niveau || 'Non spécifié' }}
+                  </span>
+                  <span class="badge">
+                    <mat-icon>assignment</mat-icon>
+                    {{ item.absences.length }} absence(s)
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="item.absences.length > 0" class="table-container">
+            <table class="absence-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Séance</th>
+                  <th>Raison</th>
+                  <th>Justifiée</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let absence of item.absences">
+                  <td>
+                    <div class="date-cell">
+                      <mat-icon>event</mat-icon>
+                      {{ absence.date | date: 'dd/MM/yyyy' }}
+                    </div>
+                  </td>
+                  <td>
+                    <div class="seance-cell">
+                      <mat-icon>schedule</mat-icon>
+                      {{ absence.seance?.nom || 'N/A' }}
+                    </div>
+                  </td>
+                  <td>{{ absence.raison || 'Non spécifiée' }}</td>
+                  <td>
+                    <span class="badge-justified" [ngClass]="absence.justifiee ? 'yes' : 'no'">
+                      <mat-icon>{{ absence.justifiee ? 'check_circle' : 'warning' }}</mat-icon>
+                      {{ absence.justifiee ? 'Oui' : 'Non' }}
+                    </span>
+                  </td>
+                  <td class="actions-cell">
+                      <mat-icon>edit</mat-icon>
+                    <button mat-icon-button (click)="deleteAbsence(absence.id)">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Empty State -->
+          <div *ngIf="item.absences.length === 0" class="empty-state">
+            <div class="empty-content">
+              <mat-icon>info</mat-icon>
+              <h3>Aucune absence enregistrée</h3>
+              <p>Cet enfant n'a aucune absence à afficher</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

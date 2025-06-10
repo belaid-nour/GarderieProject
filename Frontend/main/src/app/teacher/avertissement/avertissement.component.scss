@@ -1,0 +1,74 @@
+.content {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+
+  .block-header {
+    margin-bottom: 1.5rem;
+  }
+
+  .card {
+    border-radius: 8px;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+  }
+
+  .header {
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid #eee;
+    background-color: #f9f9f9;
+
+    .title {
+      margin: 0 0 0.3rem;
+      font-weight: 600;
+      font-size: 1.8rem;
+      color: #3f51b5;
+    }
+
+    .subtitle {
+      margin: 0;
+      font-size: 1rem;
+      color: #666;
+      font-weight: 400;
+    }
+  }
+
+  .body {
+    padding: 2rem;
+
+    .form-container {
+      display: flex;
+      flex-direction: column;
+
+      .full-width {
+        width: 100%;
+      }
+
+      .mb-4 {
+        margin-bottom: 1.25rem;
+      }
+
+      .row {
+        display: flex;
+        gap: 1rem;
+
+        .col-sm-6 {
+          flex: 1;
+        }
+      }
+
+      .form-actions {
+        margin-top: 1.5rem;
+
+        button {
+          min-width: 120px;
+          font-weight: 600;
+        }
+      }
+
+      .error-message {
+        color: #e53935;
+        font-weight: 700;
+      }
+    }
+  }
+}

@@ -1,0 +1,105 @@
+<!-- classe-list-enfant.component.html -->
+<section class="content">
+  <div class="content-block">
+    <div class="block-header">
+      <div class="header-title-group">
+        <mat-icon class="header-icon">school</mat-icon>
+        <h1 class="page-title">Liste des élèves par classe</h1>
+      </div>
+      <mat-form-field appearance="outline" class="filter-field">
+        <mat-label>Filtrer par niveau</mat-label>
+        <mat-select [(value)]="selectedNiveau" (selectionChange)="filterClasses()">
+          <mat-option *ngFor="let niveau of niveaux" [value]="niveau">
+            <mat-icon class="option-icon">class</mat-icon>
+            {{ niveau }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="loading" *ngIf="isLoading">
+      <mat-progress-spinner color="accent" mode="indeterminate"></mat-progress-spinner>
+    </div>
+
+    <div *ngIf="!isLoading" class="classes-container">
+      <div *ngFor="let niveau of niveauxFiltres" class="niveau-block">
+        <div class="niveau-header">
+          <div class="niveau-title-group">
+            <mat-icon class="niveau-icon">grade</mat-icon>
+            <h2 class="niveau-title">{{ niveau }}</h2>
+          </div>
+          <span class="class-count">{{ filteredClasses[niveau]?.length }} classes</span>
+        </div>
+
+        <div class="classes-table">
+          <div *ngFor="let classe of filteredClasses[niveau]" class="class-container mat-elevation-z2">
+            <div class="class-header">
+              <div class="class-title">
+                <mat-icon class="class-icon">group_work</mat-icon>
+                <div class="class-info">
+                  <h3>{{ classe.nom }}</h3>
+                  <span class="class-niveau">{{ classe.niveau }}</span>
+                </div>
+              </div>
+              <div class="effectif-progress">
+                <span class="effectif-text">
+                  {{ classe.enfants.length }}/{{ classe.effectifMax }}
+                </span>
+                <div class="progress-bar">
+                  <div class="progress-fill" [style.width.%]="(classe.enfants.length / classe.effectifMax) * 100"></div>
+                </div>
+              </div>
+            </div>
+
+            <table mat-table [dataSource]="classe.enfants" class="students-table">
+              <!-- Colonne Prénom -->
+              <ng-container matColumnDef="prenom">
+                <th mat-header-cell *matHeaderCellDef>
+                  <mat-icon>person_outline</mat-icon> Prénom
+                </th>
+                <td mat-cell *matCellDef="let enfant" class="capitalize">
+                  {{ enfant.prenom }}
+                </td>
+              </ng-container>
+
+              <!-- Colonne Nom -->
+              <ng-container matColumnDef="nom">
+                <th mat-header-cell *matHeaderCellDef>
+                  <mat-icon>badge</mat-icon> Nom
+                </th>
+                <td mat-cell *matCellDef="let enfant" class="uppercase">
+                  {{ enfant.nom }}
+                </td>
+              </ng-container>
+
+              <!-- Colonne Âge -->
+              <ng-container matColumnDef="age">
+                <th mat-header-cell *matHeaderCellDef>
+                  <mat-icon>cake</mat-icon> Âge
+                </th>
+                <td mat-cell *matCellDef="let enfant">
+                  <span class="age-badge">{{ enfant.age }}</span>
+                </td>
+              </ng-container>
+
+              <!-- Colonne Sexe -->
+              <ng-container matColumnDef="sexe">
+                <th mat-header-cell *matHeaderCellDef>
+                  <mat-icon>wc</mat-icon> Sexe
+                </th>
+                <td mat-cell *matCellDef="let enfant">
+                  <mat-icon [class.male]="enfant.sexe === 'M'" [class.female]="enfant.sexe === 'F'">
+                    {{ enfant.sexe === 'M' ? 'male' : 'female' }}
+                  </mat-icon>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="['prenom', 'nom', 'age', 'sexe']"></tr>
+              <tr mat-row *matRowDef="let row; columns: ['prenom', 'nom', 'age', 'sexe']"></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

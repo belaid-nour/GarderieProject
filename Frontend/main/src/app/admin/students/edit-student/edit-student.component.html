@@ -1,0 +1,38 @@
+<h2 mat-dialog-title>Modifier l'enfant</h2>
+<mat-dialog-content>
+  <form [formGroup]="editForm" class="form-grid">
+    <mat-form-field class="full-width">
+      <mat-label>Nom</mat-label>
+      <input matInput formControlName="nom" required>
+      <mat-error *ngIf="editForm.get('nom')?.hasError('required')">Ce champ est obligatoire</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Prénom</mat-label>
+      <input matInput formControlName="prenom" required>
+      <mat-error *ngIf="editForm.get('prenom')?.hasError('required')">Ce champ est obligatoire</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Date de naissance</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="dateNaissance">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Classe</mat-label>
+      <input matInput formControlName="classe">
+    </mat-form-field>
+
+    <mat-radio-group formControlName="sexe" class="full-width">
+      <mat-label>Sexe</mat-label>
+      <mat-radio-button value="M">Masculin</mat-radio-button>
+      <mat-radio-button value="F">Féminin</mat-radio-button>
+    </mat-radio-group>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Annuler</button>
+  <button mat-raised-button color="primary" [disabled]="editForm.invalid" (click)="onSave()">Enregistrer</button>
+</mat-dialog-actions>

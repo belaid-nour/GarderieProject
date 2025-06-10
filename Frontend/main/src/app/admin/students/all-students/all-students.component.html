@@ -1,0 +1,236 @@
+<section class="content">
+  <div class="block-header">
+    <app-breadcrumb [title]="'Tous les enfants'"
+                   [items]="['Enfants']"
+                   [active_item]="'Liste des enfants'"></app-breadcrumb>
+  </div>
+
+
+  <div class="row">
+    <div class="col-12">
+      <div class="card material-card">
+        <div class="materialTableHeader">
+          <div class="left">
+            <ul class="header-buttons-left">
+              <li class="tbl-title">
+                <h2>Liste des enfants</h2>
+              </li>
+              <li class="tbl-search-box">
+                <mat-icon class="search-icon">search</mat-icon>
+                <input #filter
+                      placeholder="Filtrer..."
+                      type="text"
+                      (keyup)="applyFilter($event)"
+                      class="browser-default search-field"
+                      aria-label="Search box">
+              </li>
+            </ul>
+          </div>
+
+          <div class="right">
+            <ul class="tbl-export-btn">
+              <li class="tbl-header-btn">
+                <button mat-icon-button
+                      color="primary"
+                      (click)="select.open()"
+                      matTooltip="Colonnes">
+                  <mat-icon>view_column</mat-icon>
+                </button>
+                <mat-select #select
+                          [(ngModel)]="filter.value"
+                          class="column-filter">
+                  @for (cd of columnDefinitions; track cd) {
+                  <mat-option>
+                    <mat-checkbox (click)="$event.stopPropagation()"
+                                [(ngModel)]="cd.visible"
+                                color="primary">
+                      {{cd.label}}
+                    </mat-checkbox>
+                  </mat-option>
+                  }
+                </mat-select>
+              </li>
+
+              <li class="tbl-header-btn">
+                <button mat-icon-button
+                      (click)="refresh()"
+                      matTooltip="Actualiser">
+                  <mat-icon>refresh</mat-icon>
+                </button>
+              </li>
+
+              <li class="tbl-header-btn">
+                <button mat-icon-button
+                      (click)="exportExcel()"
+                      matTooltip="Exporter Excel">
+                  <mat-icon class="material-icons-outlined">download</mat-icon>
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="overflow-auto">
+          <div class="responsive_table">
+            <table mat-table
+                 [dataSource]="dataSource"
+                 matSort
+                 class="mat-elevation-z8 advance-table">
+
+              <!-- Colonnes -->
+              <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+                <td mat-cell *matCellDef="let enfant">{{ enfant.id }}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="nom">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Nom</th>
+                <td mat-cell *matCellDef="let enfant">{{ enfant.nom }}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="prenom">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Prénom</th>
+                <td mat-cell *matCellDef="let enfant">{{ enfant.prenom }}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="dateNaissance">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Naissance</th>
+                <td mat-cell *matCellDef="let enfant">
+                  {{ enfant.dateNaissance | date:'dd/MM/yyyy' }}
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="classe">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Classe</th>
+                <td mat-cell *matCellDef="let enfant">{{ enfant.classe }}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="statut">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Statut</th>
+                <td mat-cell *matCellDef="let enfant">
+                  <div class="status-badge" [ngClass]="{'confirmed': enfant.confirmed, 'pending': !enfant.confirmed}">
+                    <mat-icon>{{ enfant.confirmed ? 'verified' : 'schedule' }}</mat-icon>
+                    {{ enfant.confirmed ? 'Confirmé' : 'En attente' }}
+                  </div>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="paye">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Paiement</th>
+                <td mat-cell *matCellDef="let enfant">
+                  <div class="status-badge" [ngClass]="{'paid': enfant.paye, 'unpaid': !enfant.paye}">
+                    <mat-icon>{{ enfant.paye ? 'attach_money' : 'money_off' }}</mat-icon>
+                    {{ enfant.paye ? 'Payé' : 'Non Payé' }}
+                  </div>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="parent">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Parent</th>
+                <td mat-cell *matCellDef="let enfant">
+                  {{ enfant.user?.nom }} {{ enfant.user?.prenom }}
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef class="text-center">Actions</th>
+                <td mat-cell *matCellDef="let enfant" class="text-center">
+                  <button mat-icon-button
+                        color="primary"
+                        (click)="toggleConfirmation(enfant); $event.stopPropagation()"
+                        matTooltip="{{ enfant.confirmed ? 'Désconfirmer' : 'Confirmer' }}">
+                    <mat-icon>{{ enfant.confirmed ? 'cancel' : 'check_circle' }}</mat-icon>
+                  </button>
+
+                  <button mat-icon-button
+                        color="accent"
+                        matTooltip="{{ enfant.paye ? 'Marquer non payé' : 'Marquer payé' }}">
+                    <mat-icon>{{ enfant.paye ? 'undo' : 'euro' }}</mat-icon>
+                  </button>
+                  <button mat-icon-button
+                  color="warn"
+                  (click)="editEnfant(enfant); $event.stopPropagation()"
+                  matTooltip="Modifier">
+            <mat-icon>edit</mat-icon>
+          </button>
+                  <button mat-icon-button
+                        color="accent"
+                        (click)="viewDetails(enfant); $event.stopPropagation()"
+                        matTooltip="Détails">
+                    <mat-icon>visibility</mat-icon>
+                  </button>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="getDisplayedColumns()"></tr>
+              <tr mat-row
+                *matRowDef="let row; columns: getDisplayedColumns();"
+                [class.confirmed-row]="row.confirmed"
+                [class.pending-row]="!row.confirmed"
+                matRipple>
+              </tr>
+            </table>
+
+            <!-- États de chargement -->
+            @if (isLoading) {
+            <div class="tbl-spinner">
+              <mat-progress-spinner color="primary"
+                                  [diameter]="40"
+                                  mode="indeterminate">
+              </mat-progress-spinner>
+            </div>
+            }
+
+            @if (dataSource.data.length === 0 && !isLoading) {
+            <div class="no-results">
+              <mat-icon>child_care</mat-icon>
+              Aucun enfant trouvé
+            </div>
+            }
+
+            <mat-paginator #paginator
+                        [length]="dataSource.filteredData.length"
+                        [pageSizeOptions]="[5, 10, 25, 100]"
+                        showFirstLastButtons>
+            </mat-paginator>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Modal de détails -->
+<ng-template #detailsDialog>
+<div class="p-3">
+  <h2 mat-dialog-title>Détails complet de l'enfant</h2>
+  <mat-dialog-content>
+    <div class="row">
+      <div class="col-md-6">
+        <h4>Informations enfant:</h4>
+        <p><strong>Nom:</strong> {{ selectedEnfant.nom }}</p>
+        <p><strong>Prénom:</strong> {{ selectedEnfant.prenom }}</p>
+        <p><strong>Date naissance:</strong> {{ selectedEnfant.dateNaissance | date:'dd/MM/yyyy' }}</p>
+        <p><strong>Classe:</strong> {{ selectedEnfant.niveau }}</p>
+        <p><strong>Sexe:</strong> {{ selectedEnfant.sexe }}</p>
+      </div>
+
+      <div class="col-md-6">
+        <h4>Informations parent:</h4>
+        <p><strong>Nom:</strong> {{ selectedEnfant.user?.nom }}</p>
+        <p><strong>Prénom:</strong> {{ selectedEnfant.user?.prenom }}</p>
+        <p><strong>Email:</strong> {{ selectedEnfant.user?.email }}</p>
+        <p><strong>Téléphone:</strong> {{ selectedEnfant.user?.telephone }}</p>
+        <p><strong>Adresse:</strong> {{ selectedEnfant.user?.adresse }}</p>
+      </div>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Fermer</button>
+    <button mat-button
+          color="primary"
+          [mat-dialog-close]="true"
+          cdkFocusInitial>OK</button>
+  </mat-dialog-actions>
+</div>
+</ng-template>

@@ -1,0 +1,105 @@
+<section class="content">
+  <div class="content-block">
+
+    <!-- Breadcrumb -->
+    <div class="block-header">
+      <app-breadcrumb
+        [title]="'Mes Avertissements'"
+        [items]="['Accueil', 'Enseignant', 'Avertissements']"
+        [active_item]="'Liste des avertissements'">
+      </app-breadcrumb>
+    </div>
+
+    <!-- Welcome Card -->
+    <div class="welcome-card mat-elevation-z2">
+      <div class="welcome-content">
+        <mat-icon class="welcome-icon">warning</mat-icon>
+        <div>
+          <h3>Bienvenue dans votre espace avertissements ⚠️</h3>
+          <p>Consultez et gérez les avertissements que vous avez émis</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <div class="avertissement-card mat-elevation-z4">
+
+          <!-- Header -->
+          <div class="card-header">
+            <h2 class="card-title">
+              <mat-icon>report_problem</mat-icon>
+              Liste des avertissements
+            </h2>
+          </div>
+
+          <!-- Body -->
+          <div class="card-body">
+
+            <!-- Loading State -->
+            <div class="loading-state" *ngIf="isLoading">
+              <mat-spinner diameter="40"></mat-spinner>
+              <p>Chargement des avertissements...</p>
+            </div>
+
+            <!-- Error State -->
+            <div class="error-state mat-elevation-z2" *ngIf="!isLoading && errorMessage">
+              <mat-icon>error_outline</mat-icon>
+              <h3>Oups ! Une erreur est survenue</h3>
+              <p>{{ errorMessage }}</p>
+            </div>
+
+            <!-- Table -->
+            <div *ngIf="!isLoading && !errorMessage && avertissements.length > 0">
+              <table mat-table [dataSource]="avertissements" class="avertissement-table" matSort>
+
+                <!-- Titre -->
+                <ng-container matColumnDef="titre">
+                  <th mat-header-cell *matHeaderCellDef>Titre</th>
+                  <td mat-cell *matCellDef="let av">{{ av.titre }}</td>
+                </ng-container>
+
+                <!-- Description -->
+                <ng-container matColumnDef="description">
+                  <th mat-header-cell *matHeaderCellDef>Description</th>
+                  <td mat-cell *matCellDef="let av">{{ av.description || 'Aucune description' }}</td>
+                </ng-container>
+
+                <!-- Sévérité -->
+                <ng-container matColumnDef="severite">
+                  <th mat-header-cell *matHeaderCellDef>Gravité</th>
+                  <td mat-cell *matCellDef="let av">{{ severiteLabels[av.severite] || av.severite }}</td>
+                </ng-container>
+
+                <!-- Date Création -->
+                <ng-container matColumnDef="dateCreation">
+                  <th mat-header-cell *matHeaderCellDef>Date création</th>
+                  <td mat-cell *matCellDef="let av">
+                    <mat-icon>event</mat-icon> {{ av.dateCreation | date: 'dd/MM/yyyy HH:mm' }}
+                  </td>
+                </ng-container>
+
+                <!-- Enfant -->
+                <ng-container matColumnDef="enfant">
+                  <th mat-header-cell *matHeaderCellDef>Enfant</th>
+                  <td mat-cell *matCellDef="let av">{{ av.enfant?.prenom }} {{ av.enfant?.nom }}</td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+              </table>
+            </div>
+
+            <!-- Empty State -->
+            <div *ngIf="!isLoading && !errorMessage && avertissements.length === 0" class="empty-state mat-elevation-z2">
+              <mat-icon>folder_off</mat-icon>
+              <h3>Aucun avertissement trouvé</h3>
+              <p>Vous n'avez émis aucun avertissement pour le moment.</p>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

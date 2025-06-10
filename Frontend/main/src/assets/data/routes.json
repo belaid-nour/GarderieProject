@@ -1,0 +1,720 @@
+{
+  "routes": [
+    {
+      "path": "",
+      "title": "MENUITEMS.MAIN.TEXT",
+      "iconType": "",
+      "icon": "",
+      "class": "",
+      "groupTitle": true,
+      "badge": "",
+      "badgeClass": "",
+      "role": ["All"],
+      "submenu": []
+    },
+    {
+      "path": "",
+      "title": "Tableau de Bord",
+      "iconType": "material-icons-outlined",
+      "icon": "space_dashboard",
+      "class": "menu-toggle",
+      "groupTitle": false,
+      "badge": "",
+      "badgeClass": "",
+      "role": ["Admin"],
+      "submenu": [
+        {
+          "path": "/admin/dashboard/main",
+          "title": "Tableau de Bord 1",
+          "iconType": "",
+          "icon": "",
+          "class": "ml-menu",
+          "groupTitle": false,
+          "badge": "",
+          "badgeClass": "",
+          "role": [""],
+          "submenu": []
+        }
+
+      ]
+    },
+     {
+      "path": "",
+      "title": "Profil",
+      "iconType": "material-icons-outlined",
+      "icon": "person",
+      "class": "menu-toggle",
+      "groupTitle": false,
+      "badge": "",
+      "badgeClass": "",
+      "role": ["Parent"],
+      "submenu": [
+        {
+          "path": "/student/my-profil/mon-profil",
+          "title": "Profil et Sécurité",
+          "iconType": "material-icons-outlined",
+          "icon": "visibility",
+          "class": "ml-menu",
+          "groupTitle": false,
+          "badge": "",
+          "badgeClass": "",
+          "role": [""],
+          "submenu": []
+        },
+        {
+          "path": "/student/my-profil/edit-profil",
+          "title": "Modifier Profil",
+          "iconType": "material-icons-outlined",
+          "icon": "settings",
+          "class": "ml-menu",
+          "groupTitle": false,
+          "badge": "",
+          "badgeClass": "",
+          "role": [""],
+          "submenu": []
+        }
+      ]
+    },
+      {
+      "path": "",
+      "title": "Enfants",
+      "iconType": "material-icons-outlined",
+      "icon": "people_alt",
+      "class": "menu-toggle",
+      "groupTitle": false,
+      "badge": "",
+      "badgeClass": "",
+      "role": ["Parent"],
+      "submenu": [
+        {
+          "path": "/student/students/all-students",
+          "title": "Liste des Enfants",
+          "iconType": "",
+          "icon": "",
+          "class": "ml-menu",
+          "groupTitle": false,
+          "badge": "",
+          "badgeClass": "",
+          "role": [""],
+          "submenu": []
+        },
+        {
+          "path": "/student/students/add-student",
+          "title": "Ajouter Enfant",
+          "iconType": "",
+          "icon": "",
+          "class": "ml-menu",
+          "groupTitle": false,
+          "badge": "",
+          "badgeClass": "",
+          "role": [""],
+          "submenu": []
+        }
+      ]
+    }
+,
+
+    {
+      "path": "",
+      "title": "Parents",
+      "iconType": "material-icons-outlined",
+      "icon": "family_restroom",
+      "class": "menu-toggle",
+      "groupTitle": false,
+      "badge": "",
+      "badgeClass": "",
+      "role": ["Admin"],
+      "submenu": [
+        {
+          "path": "/admin/parents/all-parents",
+          "title": "Liste des Parents",
+          "iconType": "",
+          "icon": "",
+          "class": "ml-menu",
+          "groupTitle": false,
+          "badge": "",
+          "badgeClass": "",
+          "role": [""],
+          "submenu": []
+        },
+        {
+          "path": "/admin/parents/add-parent",
+          "title": "Ajouter Parent",
+          "iconType": "",
+          "icon": "",
+          "class": "ml-menu",
+          "groupTitle": false,
+          "badge": "",
+          "badgeClass": "",
+          "role": [""],
+          "submenu": []
+        }
+      ]
+    },
+  {
+  "path": "",
+  "title": "Avertissements",
+  "iconType": "material-icons-outlined",
+  "icon": "warning",
+  "class": "menu-toggle",
+  "groupTitle": false,
+  "badge": "",
+  "badgeClass": "",
+  "role": ["Teacher"],
+  "submenu": [
+    {
+      "path": "/teacher/avertissement-list",
+      "title": "Liste des Avertissements",
+      "iconType": "",
+      "icon": "",
+      "class": "ml-menu",
+      "groupTitle": false,
+      "badge": "",
+      "badgeClass": "",
+      "role": [""],
+      "submenu": []
+    },
+    {
+      "path": "/teacher/avertissement",
+      "title": "Ajouter Avertissement",
+      "iconType": "",
+      "icon": "",
+      "class": "ml-menu",
+      "groupTitle": false,
+      "badge": "",
+      "badgeClass": "",
+      "role": [""],
+      "submenu": []
+    }
+  ]
+}
+
+,
+    {
+      "path": "",
+      "title": "Enseignants",
+      "iconType": "material-icons-outlined",
+      "icon": "person",
+      "class": "menu-toggle",
+      "groupTitle": false,
+      "badge": "",
+      "badgeClass": "",
+      "role": ["Admin"],
+      "submenu": [
+        {
+          "path": "/admin/teachers/all-teachers",
+          "title": "Liste des Enseignants",
+          "iconType": "",
+          "icon": "",
+          "class": "ml-menu",
+          "groupTitle": false,
+          "badge": "",
+          "badgeClass": "",
+          "role": [""],
+          "submenu": []
+        },
+        {
+          "path": "/admin/teachers/add-teacher",
+          "title": "Ajouter Enseignant",
+          "iconType": "",
+          "icon": "",
+          "class": "ml-menu",
+          "groupTitle": false,
+          "badge": "",
+          "badgeClass": "",
+          "role": [""],
+          "submenu": []
+        }
+
+      ]
+    },
+     {
+      "path": "",
+      "title": "Élèves",
+      "iconType": "material-icons-outlined",
+      "icon": "people_alt",
+      "class": "menu-toggle",
+      "groupTitle": false,
+      "badge": "",
+      "badgeClass": "",
+      "role": ["Admin"],
+      "submenu": [
+        {
+          "path": "/admin/students/all-students",
+          "title": "Liste des Élèves",
+          "iconType": "",
+          "icon": "",
+          "class": "ml-menu",
+          "groupTitle": false,
+          "badge": "",
+          "badgeClass": "",
+          "role": [""],
+          "submenu": []
+        },
+        {
+          "path": "/admin/students/add-student",
+          "title": "Ajouter Élève",
+          "iconType": "",
+          "icon": "",
+          "class": "ml-menu",
+          "groupTitle": false,
+          "badge": "",
+          "badgeClass": "",
+          "role": [""],
+          "submenu": []
+
+
+
+        }
+      ]
+    },
+    {
+  "path": "/student/list-cours",
+  "title": "Les Cours ",
+  "iconType": "material-icons-outlined",
+  "icon": "menu_book",
+  "class": "",
+  "groupTitle": false,
+  "badge": "",
+  "badgeClass": "",
+  "role": ["Parent"],
+  "submenu": []
+},
+    {
+  "path": "/student/timetable",
+  "title": "Emploi du Temps",
+  "iconType": "material-icons-outlined",
+  "icon": "schedule",
+  "class": "",
+  "groupTitle": false,
+  "badge": "",
+  "badgeClass": "",
+  "role": ["Parent"],
+  "submenu": []
+}
+,
+    {
+  "path": "/student/evaluation",
+  "title": "Évaluations",
+  "iconType": "material-icons-outlined",
+  "icon": "grading",
+  "class": "",
+  "groupTitle": false,
+  "badge": "",
+  "badgeClass": "",
+  "role": ["Parent"],
+  "submenu": []
+},
+{
+  "path": "/student/avertissement-list-enfant",
+  "title": "Avertissements",
+  "iconType": "material-icons-outlined",
+  "icon": "report_problem",
+  "class": "",
+  "groupTitle": false,
+  "badge": "",
+  "badgeClass": "",
+  "role": ["Parent"],
+  "submenu": []
+},
+
+{
+  "path": "/student/list-absence",
+  "title": "Absences",
+  "iconType": "material-icons-outlined",
+  "icon": "event_busy",
+  "class": "",
+  "groupTitle": false,
+  "badge": "",
+  "badgeClass": "",
+  "role": ["Parent"],
+  "submenu": []
+},
+
+{
+  "path": "",
+  "title": "Réclamations",
+  "iconType": "material-icons-outlined",
+  "icon": "feedback",
+  "class": "menu-toggle",
+  "groupTitle": false,
+  "badge": "",
+  "badgeClass": "",
+  "role": ["Parent"],
+  "submenu": [
+    {
+      "path": "/student/reclamations/add-reclamation",
+      "title": "Ajouter Réclamation",
+      "iconType": "material-icons-outlined",
+      "icon": "add_comment",
+      "class": "ml-menu",
+      "groupTitle": false,
+      "badge": "",
+      "badgeClass": "",
+      "role": [""],
+      "submenu": []
+    },
+    {
+      "path": "/student/reclamations/list-reclamations",
+      "title": "Consulter Réclamations",
+      "iconType": "material-icons-outlined",
+      "icon": "rate_review",
+      "class": "ml-menu",
+      "groupTitle": false,
+      "badge": "",
+      "badgeClass": "",
+      "role": [""],
+      "submenu": []
+    }
+  ]
+}
+,
+    {
+  "path": "",
+  "title": "Classes",
+  "iconType": "material-icons-outlined",
+  "icon": "class",
+  "class": "menu-toggle",
+  "groupTitle": false,
+  "badge": "",
+  "badgeClass": "",
+  "role": ["Admin"],
+  "submenu": [
+    {
+      "path": "/admin/classe/list-class",
+      "title": "Liste des Classes",
+      "iconType": "",
+      "icon": "",
+      "class": "ml-menu",
+      "groupTitle": false,
+      "badge": "",
+      "badgeClass": "",
+      "role": [""],
+      "submenu": []
+    },
+    {
+      "path": "/admin/classe/nouveau",
+      "title": "Créer Classe",
+      "iconType": "",
+      "icon": "",
+      "class": "ml-menu",
+      "groupTitle": false,
+      "badge": "",
+      "badgeClass": "",
+      "role": [""],
+      "submenu": []
+    },
+    {
+      "path": "/admin/classe/assign",
+      "title": "Assigner Classe",
+      "iconType": "",
+      "icon": "",
+      "class": "ml-menu",
+      "groupTitle": false,
+      "badge": "",
+      "badgeClass": "",
+      "role": [""],
+      "submenu": []
+    },
+    {
+      "path": "/admin/classe/list-classe-enfant",
+      "title": "Classes Enfants",
+      "iconType": "",
+      "icon": "",
+      "class": "ml-menu",
+      "groupTitle": false,
+      "badge": "",
+      "badgeClass": "",
+      "role": [""],
+      "submenu": []
+    }
+  ]
+},
+
+
+{
+  "path": "",
+  "title": "Séances",
+  "iconType": "material-icons-outlined",
+  "icon": "event",
+  "class": "menu-toggle",
+  "groupTitle": false,
+  "badge": "",
+  "badgeClass": "",
+  "role": ["Admin"],
+  "submenu": [
+    {
+      "path": "/admin/seances/all-seances",
+      "title": "Liste des Séances",
+      "iconType": "",
+      "icon": "",
+      "class": "ml-menu",
+      "groupTitle": false,
+      "badge": "",
+      "badgeClass": "",
+      "role": [""],
+      "submenu": []
+    },
+    {
+      "path": "/admin/seances/add-seance",
+      "title": "Ajouter Séance",
+      "iconType": "",
+      "icon": "",
+      "class": "ml-menu",
+      "groupTitle": false,
+      "badge": "",
+      "badgeClass": "",
+      "role": [""],
+      "submenu": []
+    },
+
+    {
+      "path": "/admin/seances/calendrier/1",
+      "title": "Détails Séance",
+      "iconType": "",
+      "icon": "",
+      "class": "ml-menu",
+      "groupTitle": false,
+      "badge": "",
+      "badgeClass": "",
+      "role": [""],
+      "submenu": []
+    }
+  ]
+},
+
+    {
+      "path": "",
+      "title": "Profil",
+      "iconType": "material-icons-outlined",
+      "icon": "person",
+      "class": "menu-toggle",
+      "groupTitle": false,
+      "badge": "",
+      "badgeClass": "",
+      "role": ["Teacher"],
+      "submenu": [
+        {
+          "path": "/teacher/my-profil/mon-profil",
+          "title": "Profil et Sécurité",
+          "iconType": "material-icons-outlined",
+          "icon": "visibility",
+          "class": "ml-menu",
+          "groupTitle": false,
+          "badge": "",
+          "badgeClass": "",
+          "role": [""],
+          "submenu": []
+        },
+        {
+          "path": "/teacher/my-profil/edit-profil",
+          "title": "Modifier Profil",
+          "iconType": "material-icons-outlined",
+          "icon": "settings",
+          "class": "ml-menu",
+          "groupTitle": false,
+          "badge": "",
+          "badgeClass": "",
+          "role": [""],
+          "submenu": []
+
+        }
+      ]
+    },
+    {
+  "path": "",
+  "title": "Cours",
+  "iconType": "material-icons-outlined",
+  "icon": "menu_book",
+  "class": "menu-toggle",
+  "groupTitle": false,
+  "badge": "",
+  "badgeClass": "",
+  "role": ["Teacher"],
+  "submenu": [
+    {
+      "path": "/teacher/course/course-list",
+      "title": "Liste des Cours",
+      "iconType": "material-icons-outlined",
+      "icon": "list_alt",
+      "class": "ml-menu",
+      "groupTitle": false,
+      "badge": "",
+      "badgeClass": "",
+      "role": [""],
+      "submenu": []
+    },
+    {
+      "path": "/teacher/course/course-upload",
+      "title": "Ajouter un Cours",
+      "iconType": "material-icons-outlined",
+      "icon": "upload_file",
+      "class": "ml-menu",
+      "groupTitle": false,
+      "badge": "",
+      "badgeClass": "",
+      "role": [""],
+      "submenu": []
+    }
+  ]
+}
+,
+{
+  "path": "",
+  "title": "Séances",
+  "iconType": "material-icons-outlined",
+  "icon": "event",
+  "class": "menu-toggle",
+  "groupTitle": false,
+  "badge": "",
+  "badgeClass": "",
+  "role": ["Teacher"],
+  "submenu": [
+    {
+      "path": "/teacher/seances/mes-seances",
+      "title": "Mes Séances",
+      "iconType": "material-icons-outlined",
+      "icon": "event_available",
+      "class": "ml-menu",
+      "groupTitle": false,
+      "badge": "",
+      "badgeClass": "",
+      "role": [""],
+      "submenu": []
+    }
+  ]
+}
+,
+
+
+    {
+      "path": "/teacher/dashboard",
+      "title": "Tableau de Bord",
+      "iconType": "material-icons-outlined",
+      "icon": "space_dashboard",
+      "class": "",
+      "groupTitle": false,
+      "badge": "",
+      "badgeClass": "",
+      "role": ["Teacher"],
+      "submenu": []
+    },
+
+
+  {
+    "path": "",
+    "title": "Les absences",
+    "iconType": "material-icons-outlined",
+    "icon": "event_busy",
+    "class": "menu-toggle",
+    "groupTitle": false,
+    "badge": "",
+    "badgeClass": "",
+    "role": ["Admin"],
+    "submenu": [
+      {
+        "path": "/admin/list-absence",
+        "title": "Liste des absences",
+        "iconType": "",
+        "icon": "list",
+        "class": "ml-menu",
+        "groupTitle": false,
+        "badge": "",
+        "badgeClass": "",
+        "role": ["Admin"],
+        "submenu": []
+      }
+    ]
+  },
+{
+  "path": "",
+  "title": "Les réclamations",
+  "iconType": "material-icons-outlined",
+  "icon": "feedback",
+  "class": "menu-toggle",
+  "groupTitle": false,
+  "badge": "",
+  "badgeClass": "",
+  "role": ["Admin"],
+  "submenu": [
+    {
+      "path": "/admin/chat",
+      "title": "Liste des réclamations",
+      "iconType": "",
+      "icon": "list",
+      "class": "ml-menu",
+      "groupTitle": false,
+      "badge": "",
+      "badgeClass": "",
+      "role": ["Admin"],
+      "submenu": []
+    }
+  ]
+}
+,
+  {
+    "path": "",
+    "title": "Les réclamations",
+    "iconType": "material-icons-outlined",
+    "icon": "report_problem",
+    "class": "menu-toggle",
+    "groupTitle": false,
+    "badge": "",
+    "badgeClass": "",
+    "role": ["Admin"],
+    "submenu": [
+      {
+        "path": "/admin/list-reclamation",
+        "title": "Liste des réclamations",
+        "iconType": "",
+        "icon": "list",
+        "class": "ml-menu",
+        "groupTitle": false,
+        "badge": "",
+        "badgeClass": "",
+        "role": ["Admin"],
+        "submenu": []
+      }
+    ]
+  },
+  {
+    "path": "",
+    "title": "Les avertissements",
+    "iconType": "material-icons-outlined",
+    "icon": "warning",
+    "class": "menu-toggle",
+    "groupTitle": false,
+    "badge": "",
+    "badgeClass": "",
+    "role": ["Admin"],
+    "submenu": [
+      {
+        "path": "/admin/avertissement-list-enfant",
+        "title": "Liste des avertissements",
+        "iconType": "",
+        "icon": "list",
+        "class": "ml-menu",
+        "groupTitle": false,
+        "badge": "",
+        "badgeClass": "",
+        "role": ["Admin"],
+        "submenu": []
+      }
+    ]
+  }
+,
+
+    {
+      "path": "/teacher/settings",
+      "title": "Paramètres",
+      "iconType": "material-icons-outlined",
+      "icon": "settings",
+      "class": "",
+      "groupTitle": false,
+      "badge": "",
+      "badgeClass": "",
+      "role": ["Teacher"],
+      "submenu": []
+    }
+  ]
+}

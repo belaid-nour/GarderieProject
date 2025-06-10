@@ -1,0 +1,33 @@
+<section class="content">
+  <div class="content-block">
+    @for (breadscrum of breadscrums; track breadscrum) {
+      <div class="block-header">
+        <app-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items"></app-breadcrumb>
+      </div>
+    }
+
+    <h3 class="mb-4 text-secondary text-center">🗂️ Historique des réclamations</h3>
+    
+    <div *ngFor="let msg of messages" class="card mt-3 shadow-sm border-0 rounded-4">
+      <div class="card-body">
+        <h5 class="card-title text-primary">{{ msg.objet }}</h5>
+        <p class="card-text">{{ msg.message }}</p>
+        <p class="text-muted mb-2 small">
+          📅 Envoyé le {{ msg.dateEnvoi | date:'short' }} – Statut :
+          <span
+            class="badge px-2 py-1 rounded-pill"
+            [ngClass]="msg.traite ? 'bg-success' : 'bg-warning text-dark'"
+          >
+            {{ msg.traite ? 'Traité' : 'En attente' }}
+          </span>
+        </p>
+
+        <div *ngIf="msg.reponseAdmin" class="mt-2 border-top pt-2">
+          <p class="fst-italic text-success mb-0">
+            📝 Réponse de l'admin : {{ msg.reponseAdmin }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

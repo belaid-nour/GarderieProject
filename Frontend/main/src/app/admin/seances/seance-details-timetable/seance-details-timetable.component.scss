@@ -1,0 +1,316 @@
+/* seance-details-timetable.component.scss */
+$primary: #4361ee;
+$secondary: #4cc9f0;
+$background: #f8fafc;
+$text: #2b2d42;
+
+.timetable-wrapper {
+  padding: 2rem;
+  background: $background;
+  min-height: 100vh;
+}
+
+.timetable-container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.timetable-header {
+  background: rgb(199, 209, 234);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.timetable-title {
+  font-size: 1.8rem;
+  color: $text;
+  font-weight: 700;
+  margin: 0;
+}
+
+.date-navigation {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  .nav-button {
+    background: $primary;
+    color: white;
+    border: none;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:hover {
+      background: darken($primary, 10%);
+    }
+  }
+
+  .current-week {
+    font-weight: 500;
+    color: $text;
+  }
+}
+
+.control-panel {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 1rem;
+}
+
+.search-group {
+  position: relative;
+
+  .search-icon {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: lighten($text, 30%);
+  }
+
+  .search-input {
+    width: 100%;
+    padding: 0.8rem 1rem 0.8rem 2.5rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.75rem;
+    font-size: 1rem;
+
+    &:focus {
+      outline: 2px solid $primary;
+      border-color: transparent;
+    }
+  }
+}
+
+.filter-group {
+  display: flex;
+  gap: 0.5rem;
+
+  .filter-select, .date-picker {
+    padding: 0.8rem 1rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.75rem;
+    background: white;
+    font-size: 1rem;
+
+    &:focus {
+      outline: 2px solid $primary;
+    }
+  }
+}
+
+.class-section {
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+.class-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid #e2e8f0;
+
+  .class-name {
+    font-size: 1.25rem;
+    margin: 0;
+    color: $text;
+  }
+
+  .class-schedule {
+    color: #64748b;
+    font-size: 0.9rem;
+  }
+}
+
+.class-actions {
+  display: flex;
+  gap: 0.5rem;
+
+  .icon-button {
+    width: 2.5rem;
+    height: 2.5rem;
+    border: none;
+    background: #f1f5f9;
+    color: $text;
+    border-radius: 0.75rem;
+    cursor: pointer;
+
+    &:hover {
+      background: $primary;
+      color: white;
+    }
+  }
+}
+
+.time-grid {
+  display: flex;
+  position: relative;
+}
+
+.time-axis {
+  width: 100px;
+  padding: 1rem;
+
+  .time-slot {
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    color: #64748b;
+    font-size: 0.9rem;
+    padding-right: 0.5rem;
+    border-bottom: 1px solid #e2e8f0;
+  }
+}
+
+.days-container {
+  flex: 1;
+  display: flex;
+}
+
+.day-column {
+  flex: 1;
+  min-width: 200px;
+  border-right: 1px solid #e2e8f0;
+
+  &:last-child {
+    border-right: none;
+  }
+}
+
+.day-header {
+  padding: 1rem;
+  text-align: center;
+  background: #f8fafc;
+
+  .day-name {
+    font-weight: 600;
+    color: $primary;
+    text-transform: uppercase;
+  }
+
+  .day-date {
+    color: #64748b;
+    font-size: 0.9rem;
+  }
+}
+
+.time-cells {
+  position: relative;
+  height: calc(60px * 24);
+}
+
+.time-cell {
+  height: 60px;
+  border-bottom: 1px solid #e2e8f0;
+  position: relative;
+
+  &.has-seance {
+    background: #f8fafc;
+  }
+}
+
+.seance-card {
+  position: absolute;
+  left: 2px;
+  right: 2px;
+  background: linear-gradient(135deg, white, #f8fafc);
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  padding: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 2;
+  }
+
+  &.active {
+    border-color: $primary;
+    background: linear-gradient(135deg, #eff6ff, white);
+  }
+}
+
+.seance-content {
+  .seance-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+  }
+
+  .seance-title {
+    font-weight: 600;
+    color: $text;
+    font-size: 0.9rem;
+  }
+
+  .seance-time, .seance-location {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.8rem;
+    color: #64748b;
+  }
+}
+
+.empty-state {
+  text-align: center;
+  padding: 4rem;
+  background: white;
+  border-radius: 1rem;
+
+  .empty-icon {
+    font-size: 3rem;
+    color: #cbd5e1;
+    margin-bottom: 1rem;
+  }
+
+  h3 {
+    color: $text;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    color: #64748b;
+  }
+}
+
+@media (max-width: 768px) {
+  .timetable-wrapper {
+    padding: 1rem;
+  }
+
+  .control-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .time-axis {
+    width: 70px;
+  }
+
+  .days-container {
+    overflow-x: auto;
+  }
+
+  .day-column {
+    min-width: 150px;
+  }
+}

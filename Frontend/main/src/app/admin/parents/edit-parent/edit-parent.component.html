@@ -1,0 +1,137 @@
+<div class="addContainer">
+  <div class="modalHeader">
+    <div class="avatarDetails">
+      <div class="modalTitle">
+        {{ data.parentId ? 'MODIFICATION DU PARENT' : 'NOUVEAU PARENT' }}
+      </div>
+    </div>
+    <button mat-icon-button mat-dialog-close class="modal-close-button" aria-label="Close dialog" type="button" [disabled]="isLoading">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <div mat-dialog-content>
+    <form class="register-form m-4" [formGroup]="parentForm" (ngSubmit)="onSubmit()">
+
+      <!-- CIN & Prénom -->
+      <div class="row">
+        <div class="col-xl-6 col-md-6 col-sm-12 mb-2">
+          <mat-form-field appearance="outline" class="example-full-width mb-3">
+            <mat-label>CIN</mat-label>
+            <input matInput formControlName="cin" maxlength="8">
+            <i class="material-icons-outlined color-icon p-3" matSuffix>badge</i>
+            <mat-error *ngIf="parentForm.get('cin')?.hasError('required')">CIN est requis</mat-error>
+            <mat-error *ngIf="parentForm.get('cin')?.hasError('pattern')">8 chiffres requis</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-xl-6 col-md-6 col-sm-12 mb-2">
+          <mat-form-field appearance="outline" class="example-full-width mb-3">
+            <mat-label>Prénom</mat-label>
+            <input matInput formControlName="prenom">
+            <i class="material-icons-outlined color-icon p-3" matSuffix>person</i>
+            <mat-error *ngIf="parentForm.get('prenom')?.hasError('required')">Prénom est requis</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- Nom & Email -->
+      <div class="row">
+        <div class="col-xl-6 col-md-6 col-sm-12 mb-2">
+          <mat-form-field appearance="outline" class="example-full-width mb-3">
+            <mat-label>Nom</mat-label>
+            <input matInput formControlName="nom">
+            <i class="material-icons-outlined color-icon p-3" matSuffix>person_outline</i>
+            <mat-error *ngIf="parentForm.get('nom')?.hasError('required')">Nom est requis</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-xl-6 col-md-6 col-sm-12 mb-2">
+          <mat-form-field appearance="outline" class="example-full-width mb-3">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email" type="email">
+            <i class="material-icons-outlined color-icon p-3" matSuffix>email</i>
+            <mat-error *ngIf="parentForm.get('email')?.hasError('required')">Email requis</mat-error>
+            <mat-error *ngIf="parentForm.get('email')?.hasError('email')">Email invalide</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- Téléphone & Adresse -->
+      <div class="row">
+        <div class="col-xl-6 col-md-6 col-sm-12 mb-2">
+          <mat-form-field appearance="outline" class="example-full-width mb-3">
+            <mat-label>Téléphone</mat-label>
+            <input matInput formControlName="telephone">
+            <i class="material-icons-outlined color-icon p-3" matSuffix>phone</i>
+            <mat-error *ngIf="parentForm.get('telephone')?.hasError('required')">Téléphone requis</mat-error>
+            <mat-error *ngIf="parentForm.get('telephone')?.hasError('pattern')">8 chiffres requis</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-xl-6 col-md-6 col-sm-12 mb-2">
+          <mat-form-field appearance="outline" class="example-full-width mb-3">
+            <mat-label>Adresse</mat-label>
+            <textarea matInput formControlName="adresse" rows="2"></textarea>
+            <i class="material-icons-outlined color-icon p-3" matSuffix>home</i>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- Conjoint -->
+      <div class="row">
+        <div class="col-xl-4 col-md-4 col-sm-12 mb-2">
+          <mat-form-field appearance="outline" class="example-full-width mb-3">
+            <mat-label>Nom conjoint</mat-label>
+            <input matInput formControlName="nomConjoint">
+            <i class="material-icons-outlined color-icon p-3" matSuffix>person</i>
+          </mat-form-field>
+        </div>
+
+        <div class="col-xl-4 col-md-4 col-sm-12 mb-2">
+          <mat-form-field appearance="outline" class="example-full-width mb-3">
+            <mat-label>Prénom conjoint</mat-label>
+            <input matInput formControlName="prenomConjoint">
+            <i class="material-icons-outlined color-icon p-3" matSuffix>person_outline</i>
+          </mat-form-field>
+        </div>
+
+        <div class="col-xl-4 col-md-4 col-sm-12 mb-2">
+          <mat-form-field appearance="outline" class="example-full-width mb-3">
+            <mat-label>Téléphone conjoint</mat-label>
+            <input matInput formControlName="telephoneConjoint">
+            <i class="material-icons-outlined color-icon p-3" matSuffix>phone</i>
+            <mat-error *ngIf="parentForm.get('telephoneConjoint')?.hasError('pattern')">8 chiffres requis</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- Situation parentale -->
+      <div class="row">
+        <div class="col-12 mb-2">
+          <mat-form-field appearance="outline" class="example-full-width mb-3">
+            <mat-label>Situation parentale</mat-label>
+            <input matInput formControlName="situationParentale">
+            <i class="material-icons-outlined color-icon p-3" matSuffix>family_restroom</i>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- Buttons -->
+      <div class="row">
+        <div class="col-12">
+          <div class="example-button-row">
+            <button mat-flat-button class="formCancelBtn" type="button" (click)="onCancel()" [disabled]="isLoading">
+              <mat-icon>cancel</mat-icon> Annuler
+            </button>
+            <button mat-flat-button class="formSubmitBtn" type="submit" [disabled]="!parentForm.valid || isLoading">
+              <ng-container *ngIf="!isLoading"><mat-icon>save</mat-icon></ng-container>
+              <ng-container *ngIf="isLoading"><mat-spinner diameter="20"></mat-spinner></ng-container>
+              {{ isLoading ? 'En cours...' : 'Enregistrer' }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

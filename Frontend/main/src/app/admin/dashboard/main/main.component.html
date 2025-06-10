@@ -1,0 +1,99 @@
+<section class="content">
+  <div class="content-block">
+    @for (breadscrum of breadscrums; track breadscrum) {
+    <div class="block-header">
+      <app-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [active_item]="breadscrum.active">
+      </app-breadcrumb>
+    </div>
+    }
+
+    <div class="row">
+      <div class="col-lg-3 col-md-6 col-sm-12">
+        <app-order-info-box 
+          title="Total Admins" 
+          [value]="stats.totalAdmins.toString()" 
+          percentageText="Administrators"
+          iconClass="fas fa-user-shield" 
+          bgClass="bg-c-blue">
+        </app-order-info-box>
+      </div>
+
+      <div class="col-lg-3 col-md-6 col-sm-12">
+        <app-order-info-box 
+          title="Total Parents" 
+          [value]="stats.totalParents.toString()" 
+          percentageText="Registered Parents"
+          iconClass="fas fa-users" 
+          bgClass="bg-c-green">
+        </app-order-info-box>
+      </div>
+
+      <div class="col-lg-3 col-md-6 col-sm-12">
+        <app-order-info-box 
+          title="Total Teachers" 
+          [value]="stats.totalTeachers.toString()" 
+          percentageText="Teaching Staff"
+          iconClass="fas fa-chalkboard-teacher" 
+          bgClass="bg-c-yellow">
+        </app-order-info-box>
+      </div>
+
+      <div class="col-lg-3 col-md-6 col-sm-12">
+        <app-order-info-box 
+          title="Total Enfants" 
+          [value]="stats.totalEnfants?.toString() || '0'" 
+          percentageText="Registered Children"
+          iconClass="fas fa-child" 
+          bgClass="bg-c-blue">
+        </app-order-info-box>
+      </div>
+    </div>
+
+    <div class="row mt-4">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header">
+            <h5>Statistiques des Enfants</h5>
+          </div>
+          <div class="card-body">
+            <div class="row text-center">
+              <div class="col-md-6 mb-4">
+                <div class="gender-card male">
+                  <i class="fas fa-male"></i>
+                  <h3>{{ stats.enfantsParSexe?.M || 0 }}</h3>
+                  <p>Garçons</p>
+                </div>
+              </div>
+              <div class="col-md-6 mb-4">
+                <div class="gender-card female">
+                  <i class="fas fa-female"></i>
+                  <h3>{{ stats.enfantsParSexe?.F || 0 }}</h3>
+                  <p>Filles</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header">
+            <h5>Répartition par Sexe</h5>
+          </div>
+          <div class="card-body">
+            <apx-chart
+              *ngIf="stats.enfantsParSexe"
+              [series]="[stats.enfantsParSexe.M || 0, stats.enfantsParSexe.F || 0]"
+              [chart]="{ type: 'pie', height: 300 }"
+              [labels]="['Garçons', 'Filles']"
+              [colors]="['#36a2eb', '#ff6384']"
+              [legend]="{ position: 'bottom' }"
+              [dataLabels]="{ enabled: true }"
+            ></apx-chart>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

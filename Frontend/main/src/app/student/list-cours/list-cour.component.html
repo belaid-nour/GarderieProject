@@ -1,0 +1,163 @@
+<section class="content">
+  <div class="content-block">
+    <div class="block-header">
+      <app-breadcrumb
+        [title]="'Cours des Enfants'"
+        [items]="['Scolarité']"
+        [active_item]="'Cours'">
+      </app-breadcrumb>
+    </div>
+
+    <!-- Header with summary -->
+    <div class="dashboard-header">
+      <div class="summary-card">
+        <div class="summary-icon">
+          <mat-icon>menu_book</mat-icon>
+        </div>
+        <div class="summary-content">
+          <h2>Suivi des cours</h2>
+          <p>Accès aux ressources pédagogiques par classe</p>
+        </div>
+      </div>
+
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-value">{{ totalCours }}</div>
+          <div class="metric-label">Cours disponibles</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-value">{{ enfants.length }}</div>
+          <div class="metric-label">Élèves suivis</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-value">{{ classes.length }}</div>
+          <div class="metric-label">Classes</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="course-container">
+      <!-- Loading State -->
+      <div *ngIf="loading" class="loading-state">
+        <mat-spinner diameter="50"></mat-spinner>
+        <p>Chargement des données...</p>
+      </div>
+
+      <!-- Error State -->
+      <div *ngIf="!loading && errorMessage" class="error-state">
+        <mat-icon>error_outline</mat-icon>
+        <h3>Erreur de chargement</h3>
+        <p>{{ errorMessage }}</p>
+        <button mat-raised-button color="primary" (click)="loadCourses()">
+          <mat-icon>refresh</mat-icon>
+          Réessayer
+        </button>
+      </div>
+
+      <!-- Content -->
+      <div *ngIf="!loading && !errorMessage">
+        <div *ngFor="let classe of classesData" class="classe-section">
+          <div class="classe-header">
+            <div class="classe-info">
+              <mat-icon class="classe-icon">class</mat-icon>
+              <div>
+                <h3>{{ classe.classe.nom }}</h3>
+                <div class="classe-meta">
+                  <span class="badge">
+                    <mat-icon>school</mat-icon>
+                    {{ classe.classe.niveau || 'Non spécifié' }}
+                  </span>
+                  <span class="badge">
+                    <mat-icon>people</mat-icon>
+                    {{ classe.enfants.length }} élève(s)
+                  </span>
+                  <span class="badge">
+                    <mat-icon>description</mat-icon>
+                    {{ classe.cours.length }} cours
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="classe.cours.length > 0">
+            <div class="table-container mat-elevation-z2">
+              <table mat-table [dataSource]="classe.cours" class="course-table">
+                <!-- Titre Column -->
+                <ng-container matColumnDef="titre">
+                  <th mat-header-cell *matHeaderCellDef>Titre</th>
+                  <td mat-cell *matCellDef="let cours">
+                    <div class="title-cell">
+                      <mat-icon>title</mat-icon>
+                      {{ cours.title }}
+                    </div>
+                  </td>
+                </ng-container>
+
+                <!-- Description Column -->
+                <ng-container matColumnDef="description">
+                  <th mat-header-cell *matHeaderCellDef>Description</th>
+                  <td mat-cell *matCellDef="let cours">
+                    <div class="description-cell">
+                      {{ cours.description || 'Aucune description' }}
+                    </div>
+                  </td>
+                </ng-container>
+
+                <!-- Date Column -->
+                <ng-container matColumnDef="date">
+                  <th mat-header-cell *matHeaderCellDef>Date</th>
+                  <td mat-cell *matCellDef="let cours">
+                    <div class="date-cell">
+                      <mat-icon>event</mat-icon>
+                      {{ cours.uploadDate | date:'dd/MM/yyyy' }}
+                    </div>
+                  </td>
+                </ng-container>
+
+                <!-- Enseignant Column -->
+                <ng-container matColumnDef="enseignant">
+                  <th mat-header-cell *matHeaderCellDef>Enseignant</th>
+                  <td mat-cell *matCellDef="let cours">
+                    <div class="enseignant-cell">
+                      <mat-icon>person</mat-icon>
+                      {{ cours.teacherName || 'Non spécifié' }}
+                    </div>
+                  </td>
+                </ng-container>
+
+                <!-- Actions Column -->
+                <ng-container matColumnDef="actions">
+                  <th mat-header-cell *matHeaderCellDef class="actions-header">Actions</th>
+                  <td mat-cell *matCellDef="let cours" class="actions-cell">
+                    <a
+                      mat-stroked-button
+                      color="primary"
+                      [href]="getDownloadUrl(cours.id)"
+                      download="{{ cours.fileName }}"
+                      title="Télécharger {{ cours.fileName }}">
+                      <mat-icon>download</mat-icon>
+                      Télécharger
+                    </a>
+                  </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+              </table>
+            </div>
+          </div>
+
+          <!-- Empty State -->
+          <div *ngIf="classe.cours.length === 0" class="empty-state">
+            <div class="empty-content">
+              <mat-icon>info</mat-icon>
+              <h3>Aucun cours disponible</h3>
+              <p>Cette classe n'a pas encore de cours enregistrés</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

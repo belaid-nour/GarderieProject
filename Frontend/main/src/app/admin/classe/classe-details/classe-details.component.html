@@ -1,0 +1,118 @@
+<!-- classe-assign.component.html -->
+<section class="content">
+  <div class="content-block">
+    <div class="block-header">
+      <app-breadcrumb [title]="breadscrums[0].title" [items]="breadscrums[0].items" [active_item]="breadscrums[0].active">
+      </app-breadcrumb>
+    </div>
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+          <!-- Header Section -->
+          <div class="materialTableHeader">
+            <div class="left">
+              <ul class="header-buttons-left">
+                <li class="tbl-title">
+                  <h2>Assignation des élèves aux classes</h2>
+                </li>
+                <li class="tbl-search-box">
+                  <label><i class="material-icons search-icon">search</i></label>
+                  <input type="text" #filter placeholder="Filtrer..." (keyup)="applyFilter($event)" class="search-field"
+                    aria-label="Search" />
+                </li>
+              </ul>
+            </div>
+            <div class="right">
+              <ul class="tbl-export-btn">
+                <li>
+                  <button mat-icon-button (click)="exportExcel()" matTooltip="Exporter Excel" class="col-blue">
+                    <mat-icon>file_download</mat-icon>
+                  </button>
+                </li>
+                <li>
+                  <button mat-icon-button matTooltip="Afficher les colonnes">
+                    <mat-icon>view_column</mat-icon>
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Table Section -->
+          <div class="overflow-auto responsive_table">
+            <table mat-table [dataSource]="dataSource" matSort class="mat-cell advance-table">
+
+              <!-- Sexe -->
+              <ng-container matColumnDef="sexe">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Sexe</mat-header-cell>
+                <mat-cell *matCellDef="let enfant">
+                  <mat-icon>{{ enfant.sexe === 'M' ? 'male' : 'female' }}</mat-icon>
+                </mat-cell>
+              </ng-container>
+
+              <!-- Nom -->
+              <ng-container matColumnDef="nom">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Nom</mat-header-cell>
+                <mat-cell *matCellDef="let enfant">{{ enfant.nom }}</mat-cell>
+              </ng-container>
+
+              <!-- Prénom -->
+              <ng-container matColumnDef="prenom">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Prénom</mat-header-cell>
+                <mat-cell *matCellDef="let enfant">{{ enfant.prenom }}</mat-cell>
+              </ng-container>
+
+              <!-- Âge -->
+              <ng-container matColumnDef="age">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Âge</mat-header-cell>
+                <mat-cell *matCellDef="let enfant">{{ enfant.age }} ans</mat-cell>
+              </ng-container>
+
+              <!-- Niveau -->
+              <ng-container matColumnDef="niveau">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Niveau</mat-header-cell>
+                <mat-cell *matCellDef="let enfant">{{ enfant.niveau }}</mat-cell>
+              </ng-container>
+
+              <!-- Classe -->
+              <ng-container matColumnDef="classe">
+                <mat-header-cell *matHeaderCellDef>Classe</mat-header-cell>
+                <mat-cell *matCellDef="let enfant">
+                  <mat-select [(value)]="selectedClasse[enfant.id]" class="classe-selector">
+                    <mat-option *ngFor="let classe of classesFiltrees(enfant.niveau)" [value]="classe.id">
+                      {{ classe.nom }} ({{ classe.niveau }})
+                    </mat-option>
+                  </mat-select>
+                </mat-cell>
+              </ng-container>
+
+              <!-- Actions -->
+              <ng-container matColumnDef="actions">
+                <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+                <mat-cell *matCellDef="let enfant">
+                  <button mat-raised-button color="primary"
+                          (click)="assignerEnfant(enfant.id)"
+                          [disabled]="!selectedClasse[enfant.id]">
+                    <mat-icon>assignment_turned_in</mat-icon>
+                    Assigner
+                  </button>
+                </mat-cell>
+              </ng-container>
+
+              <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            </table>
+
+            <!-- Loading Spinner -->
+            <div *ngIf="isLoading" class="loading-overlay">
+              <mat-spinner diameter="50"></mat-spinner>
+            </div>
+
+            <!-- Paginator -->
+            <mat-paginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons></mat-paginator>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

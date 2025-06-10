@@ -1,0 +1,62 @@
+.custom-gender-stats {
+  margin-top: 20px;
+}
+
+.info-card {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  border-radius: 12px;
+  color: #fff;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  transition: transform 0.2s ease;
+}
+.gender-card i {
+  font-size: 3.5rem; /* ou 4rem selon le besoin */
+  margin-bottom: 10px;
+}
+
+
+.info-card:hover {
+  transform: translateY(-4px);
+}
+
+.info-card .icon {
+  font-size: 40px;
+  margin-right: 15px;
+  opacity: 0.85;
+}
+
+.info-card .text h4 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.info-card .text .value {
+  font-size: 28px;
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+/* Couleurs spécifiques */
+.info-card.blue {
+  background: linear-gradient(135deg, #36b9cc, #2c9faf);
+}
+
+.info-card.pink {
+  background: linear-gradient(135deg, #e83e8c, #d63384);
+}
+
+.large-chart {
+  max-width: 900px;
+  margin: 0 auto;
+  mat-card-header {
+    font-size: 1.5rem;
+    padding: 20px;
+  }
+  mat-card-content {
+    padding: 30px;
+  }
+}

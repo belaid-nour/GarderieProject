@@ -1,0 +1,42 @@
+<div class="auth-container">
+  <div class="row auth-main">
+    <div class="col-sm-6 px-0 d-none d-sm-block">
+      <div class="left-img" style="background-image: url(assets/images/pages/img1.jpg);"></div>
+    </div>
+
+    <div class="col-sm-6 auth-form-section">
+      <div class="form-section">
+        <div class="auth-wrapper">
+          <h5 class="welcome-msg">Vérification d'Email</h5>
+          <p class="auth-signup-text text-muted">Veuillez entrer le code reçu par email</p>
+
+          <form [formGroup]="verificationForm" (ngSubmit)="onSubmit()">
+            <mat-form-field appearance="outline" class="example-full-width">
+              <mat-label>Code de vérification (5 chiffres)</mat-label>
+              <input matInput formControlName="verificationCode" required maxlength="6" />
+              <mat-icon matSuffix>vpn_key</mat-icon>
+              <mat-error *ngIf="verificationCode?.errors?.['required']">
+                Code de vérification est requis
+              </mat-error>
+              <mat-error *ngIf="verificationCode?.errors?.['minlength'] || verificationCode?.errors?.['maxlength']">
+                Le code doit contenir exactement 5 caractères
+              </mat-error>
+            </mat-form-field>
+
+            <div class="container-auth-form-btn mt-4 d-flex flex-column gap-2">
+              <button
+                mat-flat-button
+                color="primary"
+                type="submit"
+                [disabled]="verificationForm.invalid || loading">
+                <span *ngIf="!loading">Vérifier</span>
+                <mat-spinner *ngIf="loading" diameter="24"></mat-spinner>
+              </button>
+            </div>
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

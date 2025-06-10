@@ -1,0 +1,128 @@
+<section class="content">
+  <div class="content-block">
+    <div class="block-header">
+      <app-breadcrumb [title]="'Ajouter un parent'"
+     ></app-breadcrumb>
+    </div>
+
+    <div class="row clearfix">
+      <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+        <div class="card">
+          <div class="header">
+            <h2>Ajouter un parent</h2>
+          </div>
+
+          <div class="body">
+            <form class="m-4" [formGroup]="parentForm" (ngSubmit)="onSubmit()">
+              <div class="row">
+                <div class="col-xl-6 mb-2">
+                  <mat-form-field appearance="outline" class="example-full-width">
+                    <mat-label>Prénom</mat-label>
+                    <input matInput formControlName="prenom" required />
+                    <mat-error *ngIf="parentForm.get('prenom')?.hasError('required')">Le prénom est requis</mat-error>
+                    <mat-error *ngIf="parentForm.get('prenom')?.hasError('pattern')">Seules les lettres sont autorisées</mat-error>
+                  </mat-form-field>
+                </div>
+
+                <div class="col-xl-6 mb-2">
+                  <mat-form-field appearance="outline" class="example-full-width">
+                    <mat-label>Nom</mat-label>
+                    <input matInput formControlName="nom" required />
+                    <mat-error *ngIf="parentForm.get('nom')?.hasError('required')">Le nom est requis</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-xl-6 mb-2">
+                  <mat-form-field appearance="outline" class="example-full-width">
+                    <mat-label>Email</mat-label>
+                    <input matInput formControlName="email" required />
+                    <mat-error *ngIf="parentForm.get('email')?.hasError('required')">L'email est requis</mat-error>
+                    <mat-error *ngIf="parentForm.get('email')?.hasError('email')">Email invalide</mat-error>
+                  </mat-form-field>
+                </div>
+
+                <div class="col-xl-6 mb-2">
+                  <mat-form-field appearance="outline" class="example-full-width">
+                    <mat-label>Téléphone</mat-label>
+                    <input matInput formControlName="telephone" type="tel" maxlength="8" required />
+                    <mat-error *ngIf="parentForm.get('telephone')?.hasError('required')">Le téléphone est requis</mat-error>
+                    <mat-error *ngIf="parentForm.get('telephone')?.hasError('pattern')">8 chiffres requis</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-xl-6 mb-2">
+                  <mat-form-field appearance="outline" class="example-full-width">
+                    <mat-label>CIN</mat-label>
+                    <input matInput formControlName="cin" maxlength="8" required />
+                    <mat-error *ngIf="parentForm.get('cin')?.hasError('required')">Le CIN est requis</mat-error>
+                    <mat-error *ngIf="parentForm.get('cin')?.hasError('pattern')">8 caractères alphanumériques</mat-error>
+                  </mat-form-field>
+                </div>
+
+                <div class="col-xl-6 mb-2">
+                  <mat-form-field appearance="outline" class="example-full-width">
+                    <mat-label>Situation Parentale</mat-label>
+                    <mat-select formControlName="situationParentale" required>
+                      <mat-option value="" disabled>-- Sélectionnez --</mat-option>
+                      <mat-option value="Marié(e)">Marié(e)</mat-option>
+                      <mat-option value="Célibataire">Célibataire</mat-option>
+                      <mat-option value="Divorcé(e)">Divorcé(e)</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="parentForm.get('situationParentale')?.hasError('required')">Ce champ est requis</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-xl-6 mb-2">
+                  <mat-form-field appearance="outline" class="example-full-width">
+                    <mat-label>Nom du conjoint</mat-label>
+                    <input matInput formControlName="nomConjoint" />
+                  </mat-form-field>
+                </div>
+
+                <div class="col-xl-6 mb-2">
+                  <mat-form-field appearance="outline" class="example-full-width">
+                    <mat-label>Téléphone du conjoint</mat-label>
+                    <input matInput formControlName="telephoneConjoint" type="tel" maxlength="8" />
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-xl-6 mb-2">
+                  <mat-form-field appearance="outline" class="example-full-width">
+                    <mat-label>Mot de passe</mat-label>
+                    <input matInput formControlName="motDePasse" type="password" required />
+                    <mat-error *ngIf="parentForm.get('motDePasse')?.hasError('required')">Mot de passe requis</mat-error>
+                  </mat-form-field>
+                </div>
+
+                <div class="col-xl-6 mb-2">
+                  <mat-form-field appearance="outline" class="example-full-width">
+                    <mat-label>Confirmation</mat-label>
+                    <input matInput formControlName="confirmationMotDePasse" type="password" required />
+                    <mat-error *ngIf="parentForm.get('confirmationMotDePasse')?.hasError('required')">Confirmer le mot de passe</mat-error>
+                    <mat-error *ngIf="parentForm.hasError('nonIdentiques')">Les mots de passe ne correspondent pas</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-xl-12 mb-2">
+                  <button mat-flat-button color="primary" [disabled]="!parentForm.valid">Soumettre</button>
+                  <button type="button" mat-flat-button color="warn" (click)="onCancel()">Annuler</button>
+                </div>
+              </div>
+
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

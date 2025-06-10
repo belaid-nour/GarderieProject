@@ -1,0 +1,435 @@
+<section class="content">
+  <div class="content-block">
+    <div class="block-header">
+      <app-breadcrumb
+        [title]="'Modifier Étudiant'"
+        [items]="breadscrums[0].items"
+      >
+      </app-breadcrumb>
+    </div>
+    <div class="row clearfix">
+      <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+        <div class="card custom-card">
+          <div class="header">
+            <h2><mat-icon>edit</mat-icon> Formulaire de modification</h2>
+            <p class="sub-header">Modifiez les informations de l'élève étape par étape</p>
+          </div>
+          <div class="body">
+            <div *ngIf="isLoading" class="loader-container">
+              <p>Chargement des données...</p>
+            </div>
+
+            <div *ngIf="!isLoading" class="wizard-container">
+              <mat-horizontal-stepper [linear]="true" #stepper>
+                <!-- Étape 1: Informations de base -->
+                <mat-step [stepControl]="basicInfoForm" label="Informations principales">
+                  <form [formGroup]="basicInfoForm">
+                    <div class="step-content">
+                      <h3 class="step-title">
+                        <mat-icon>person</mat-icon> Informations de base
+                      </h3>
+                      <p class="step-description">
+                        Modifiez les informations principales de l'élève.
+                      </p>
+
+                      <div class="row">
+                        <div class="col-md-6 mb-4">
+                          <mat-form-field appearance="outline" class="custom-form-field">
+                            <mat-label>Nom de famille</mat-label>
+                            <input matInput formControlName="nom" required>
+                            <mat-icon matSuffix>badge</mat-icon>
+                            @if (basicInfoForm.get('nom')?.invalid && basicInfoForm.get('nom')?.touched) {
+                              <mat-error>
+                                @if (basicInfoForm.get('nom')?.hasError('required')) {
+                                  Le nom est obligatoire
+                                }
+                              </mat-error>
+                            }
+                          </mat-form-field>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                          <mat-form-field appearance="outline" class="custom-form-field">
+                            <mat-label>Prénom</mat-label>
+                            <input matInput formControlName="prenom" required>
+                            <mat-icon matSuffix>face</mat-icon>
+                            @if (basicInfoForm.get('prenom')?.invalid && basicInfoForm.get('prenom')?.touched) {
+                              <mat-error>
+                                @if (basicInfoForm.get('prenom')?.hasError('required')) {
+                                  Le prénom est obligatoire
+                                }
+                              </mat-error>
+                            }
+                          </mat-form-field>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-md-6 mb-4">
+                          <mat-form-field appearance="outline" class="custom-form-field">
+                            <mat-label>Date de naissance</mat-label>
+                            <input matInput [matDatepicker]="picker" formControlName="dateNaissance" [max]="maxBirthDate()" required>
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                            <mat-icon matSuffix>cake</mat-icon>
+                            @if (basicInfoForm.get('dateNaissance')?.invalid && basicInfoForm.get('dateNaissance')?.touched) {
+                              <mat-error>
+                                @if (basicInfoForm.get('dateNaissance')?.hasError('required')) {
+                                  La date de naissance est obligatoire
+                                }
+                                @if (basicInfoForm.get('dateNaissance')?.hasError('ageInvalide')) {
+                                  L'élève doit avoir au moins 3 ans
+                                }
+                              </mat-error>
+                            }
+                          </mat-form-field>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                          <mat-form-field appearance="outline" class="custom-form-field">
+                            <mat-label>Niveau</mat-label>
+                            <mat-select formControlName="niveau" required>
+                              <mat-option *ngFor="let niveau of niveauxOptions" [value]="niveau">{{niveau}}</mat-option>
+                            </mat-select>
+                            <mat-icon matSuffix>school</mat-icon>
+                            @if (basicInfoForm.get('niveau')?.invalid && basicInfoForm.get('niveau')?.touched) {
+                              <mat-error>Le niveau est obligatoire</mat-error>
+                            }
+                          </mat-form-field>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-md-6 mb-4">
+                          <mat-label class="section-label">Sexe</mat-label>
+                          <mat-radio-group formControlName="sexe" class="gender-radio-group" required>
+                            <mat-radio-button value="M" class="gender-radio-button">
+                              <mat-icon>male</mat-icon> Masculin
+                            </mat-radio-button>
+                            <mat-radio-button value="F" class="gender-radio-button">
+                              <mat-icon>female</mat-icon> Féminin
+                            </mat-radio-button>
+                          </mat-radio-group>
+                          @if (basicInfoForm.get('sexe')?.invalid && basicInfoForm.get('sexe')?.touched) {
+                            <mat-error class="gender-error">Le sexe est obligatoire</mat-error>
+                          }
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-md-4 mb-4">
+                          <mat-form-field appearance="outline" class="custom-form-field">
+                            <mat-label>Rang dans la famille</mat-label>
+                            <input matInput type="number" formControlName="rangDansFamille" min="0" max="20">
+                            <mat-icon matSuffix>linear_scale</mat-icon>
+                            @if (basicInfoForm.get('rangDansFamille')?.invalid) {
+                              <mat-error>Doit être entre 0 et 20</mat-error>
+                            }
+                          </mat-form-field>
+                        </div>
+                        <div class="col-md-4 mb-4">
+                          <mat-form-field appearance="outline" class="custom-form-field">
+                            <mat-label>Nombre de frères</mat-label>
+                            <input matInput type="number" formControlName="nombreFrere" min="0" max="20">
+                            <mat-icon matSuffix>boy</mat-icon>
+                            @if (basicInfoForm.get('nombreFrere')?.invalid) {
+                              <mat-error>Doit être entre 0 et 20</mat-error>
+                            }
+                          </mat-form-field>
+                        </div>
+                        <div class="col-md-4 mb-4">
+                          <mat-form-field appearance="outline" class="custom-form-field">
+                            <mat-label>Nombre de sœurs</mat-label>
+                            <input matInput type="number" formControlName="nombreSoeur" min="0" max="20">
+                            <mat-icon matSuffix>girl</mat-icon>
+                            @if (basicInfoForm.get('nombreSoeur')?.invalid) {
+                              <mat-error>Doit être entre 0 et 20</mat-error>
+                            }
+                          </mat-form-field>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-12 mb-4">
+                          <mat-form-field appearance="outline" class="custom-form-field full-width">
+                            <mat-label>Description / Remarques</mat-label>
+                            <textarea matInput formControlName="description" rows="3"></textarea>
+                            <mat-icon matSuffix>notes</mat-icon>
+                            <mat-hint>Informations supplémentaires sur l'enfant</mat-hint>
+                          </mat-form-field>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-12 mb-4">
+                          <mat-form-field appearance="outline" class="custom-form-field full-width">
+                            <mat-label>Comportement de l'enfant</mat-label>
+                            <textarea matInput formControlName="comportementEnfant" rows="2"></textarea>
+                            <mat-icon matSuffix>psychology</mat-icon>
+                            <mat-hint>Comportement observé</mat-hint>
+                          </mat-form-field>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="step-actions">
+                      <button mat-stroked-button color="basic" disabled>
+                        <mat-icon>arrow_back</mat-icon>
+                        Retour
+                      </button>
+                      <button mat-raised-button color="primary" matStepperNext [disabled]="basicInfoForm.invalid">
+                        Suivant
+                        <mat-icon>arrow_forward</mat-icon>
+                      </button>
+                    </div>
+                  </form>
+                </mat-step>
+
+                <!-- Étape 2: Options -->
+                <mat-step [stepControl]="optionsForm" label="Options">
+                  <form [formGroup]="optionsForm">
+                    <div class="step-content">
+                      <h3 class="step-title">
+                        <mat-icon>list_alt</mat-icon> Options et services
+                      </h3>
+                      <p class="step-description">
+                        Modifiez les options supplémentaires pour l'élève
+                      </p>
+
+                      <div class="row">
+                        <!-- Carte Transport scolaire -->
+                        <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 mb-4">
+                          <mat-card class="option-card" [class.selected]="optionsForm.value.bus">
+                            <mat-card-header>
+                              <mat-checkbox formControlName="bus" color="primary"></mat-checkbox>
+                              <mat-card-title>Transport scolaire</mat-card-title>
+                              <mat-card-subtitle>80 DT/an</mat-card-subtitle>
+                            </mat-card-header>
+                            <mat-card-content>
+                              <div class="option-icon">
+                                <mat-icon>directions_bus</mat-icon>
+                              </div>
+                              <p>Service de transport aller-retour quotidien</p>
+                            </mat-card-content>
+                          </mat-card>
+                        </div>
+
+                        <!-- Carte Club -->
+                        <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 mb-4">
+                          <mat-card class="option-card" [class.selected]="optionsForm.value.club">
+                            <mat-card-header>
+                              <mat-checkbox formControlName="club" color="primary"></mat-checkbox>
+                              <mat-card-title>Activités extrascolaires</mat-card-title>
+                              <mat-card-subtitle>100 DT/an</mat-card-subtitle>
+                            </mat-card-header>
+                            <mat-card-content>
+                              <div class="option-icon">
+                                <mat-icon>sports_soccer</mat-icon>
+                              </div>
+                              <p>Accès aux clubs (sport, musique, arts)</p>
+                            </mat-card-content>
+                          </mat-card>
+                        </div>
+
+                        <!-- Carte Goûter -->
+                        <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 mb-4">
+                          <mat-card class="option-card" [class.selected]="optionsForm.value.gouter">
+                            <mat-card-header>
+                              <mat-checkbox formControlName="gouter" color="primary"></mat-checkbox>
+                              <mat-card-title>Goûter quotidien</mat-card-title>
+                              <mat-card-subtitle>150 DT/an</mat-card-subtitle>
+                            </mat-card-header>
+                            <mat-card-content>
+                              <div class="option-icon">
+                                <mat-icon>restaurant</mat-icon>
+                              </div>
+                              <p>Collation saine et équilibrée chaque jour</p>
+                            </mat-card-content>
+                          </mat-card>
+                        </div>
+
+                        <!-- Carte Tablier -->
+                        <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 mb-4">
+                          <mat-card class="option-card" [class.selected]="optionsForm.value.tablier">
+                            <mat-card-header>
+                              <mat-checkbox formControlName="tablier" color="primary"></mat-checkbox>
+                              <mat-card-title>Tablier scolaire</mat-card-title>
+                              <mat-card-subtitle>30 DT/an</mat-card-subtitle>
+                            </mat-card-header>
+                            <mat-card-content>
+                              <div class="option-icon">
+                                <mat-icon>checkroom</mat-icon>
+                              </div>
+                              <p>Tablier personnalisé aux couleurs de l'école</p>
+                            </mat-card-content>
+                          </mat-card>
+                        </div>
+
+                        <!-- Carte Livre -->
+                        <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 mb-4">
+                          <mat-card class="option-card" [class.selected]="optionsForm.value.livre">
+                            <mat-card-header>
+                              <mat-checkbox formControlName="livre" color="primary"></mat-checkbox>
+                              <mat-card-title>Fournitures scolaires</mat-card-title>
+                              <mat-card-subtitle>120 DT/an</mat-card-subtitle>
+                            </mat-card-header>
+                            <mat-card-content>
+                              <div class="option-icon">
+                                <mat-icon>menu_book</mat-icon>
+                              </div>
+                              <p>Manuels scolaires et fournitures complètes</p>
+                            </mat-card-content>
+                          </mat-card>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-12 mb-4">
+                          <div class="pricing-section">
+                            <h4 class="pricing-title">
+                              <mat-icon>euro_symbol</mat-icon> Type d'inscription
+                            </h4>
+
+                            <mat-radio-group formControlName="typeInscription" class="type-inscription-group">
+                              <mat-radio-button *ngFor="let type of inscriptionTypes"
+                                               [value]="type.value"
+                                               class="type-card"
+                                               [matTooltip]="type.description">
+                                <div class="type-content">
+                                  <mat-icon>calendar_today</mat-icon>
+                                  <div class="type-details">
+                                    <h5>{{type.label}}</h5>
+                                    <small>{{type.description}}</small>
+                                  </div>
+                                </div>
+                              </mat-radio-button>
+                            </mat-radio-group>
+
+                            <div class="total-display" *ngIf="currentTotal > 0">
+                              <div class="total-line">
+                                <span>Total:</span>
+                                <span class="total-price">{{ currentTotal }} DT</span>
+                              </div>
+                              <small class="price-breakdown">
+                                (Détail: {{ calculateTotal().base }} + {{ calculateTotal().options }} options)
+                                x {{ calculateTotal().coeff }}
+                              </small>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="step-actions">
+                      <button mat-stroked-button color="basic" matStepperPrevious>
+                        <mat-icon>arrow_back</mat-icon>
+                        Retour
+                      </button>
+                      <button mat-raised-button color="primary" matStepperNext>
+                        Suivant
+                        <mat-icon>arrow_forward</mat-icon>
+                      </button>
+                    </div>
+                  </form>
+                </mat-step>
+                <!-- Étape 3: Personnes autorisées -->
+                <mat-step [stepControl]="authorizedPersonsForm" label="Personnes autorisées">
+                  <form [formGroup]="authorizedPersonsForm">
+                    <div class="step-content">
+                      <h3 class="step-title">
+                        <mat-icon>supervised_user_circle</mat-icon> Personnes autorisées
+                      </h3>
+                      <p class="step-description">
+                        Personnes habilitées à récupérer l'élève
+                      </p>
+
+                      <div class="info-box">
+                        <mat-icon>info</mat-icon>
+                        <p>
+                          Vous pouvez ajouter jusqu'à 2 personnes autorisées à récupérer votre enfant.
+                        </p>
+                      </div>
+
+                      <!-- Personne autorisée 1 -->
+                      <div class="toggle-section">
+                        <mat-slide-toggle (change)="togglePersonneAutorisee(1)" color="primary" [checked]="showPersonneAutorisee1">
+                          Ajouter une première personne autorisée
+                        </mat-slide-toggle>
+                      </div>
+
+                      @if (showPersonneAutorisee1) {
+                        <mat-card class="contact-card">
+                          <mat-card-header>
+                            <mat-icon mat-card-avatar>person_add</mat-icon>
+                            <mat-card-title>Personne autorisée 1</mat-card-title>
+                          </mat-card-header>
+                          <mat-card-content>
+                            <div class="row">
+                              <div class="col-md-6 mb-3">
+                                <mat-form-field appearance="outline" class="custom-form-field">
+                                  <mat-label>Nom</mat-label>
+                                  <input matInput formControlName="personneAutorisee1Nom">
+                                </mat-form-field>
+                              </div>
+                              <div class="col-md-6 mb-3">
+                                <mat-form-field appearance="outline" class="custom-form-field">
+                                  <mat-label>Prénom</mat-label>
+                                  <input matInput formControlName="personneAutorisee1Prenom">
+                                </mat-form-field>
+                              </div>
+                            </div>
+                          </mat-card-content>
+                        </mat-card>
+                      }
+
+                      <!-- Personne autorisée 2 -->
+                      <div class="toggle-section">
+                        <mat-slide-toggle (change)="togglePersonneAutorisee(2)" color="primary" [checked]="showPersonneAutorisee2">
+                          Ajouter une deuxième personne autorisée
+                        </mat-slide-toggle>
+                      </div>
+
+                      @if (showPersonneAutorisee2) {
+                        <mat-card class="contact-card">
+                          <mat-card-header>
+                            <mat-icon mat-card-avatar>person_add</mat-icon>
+                            <mat-card-title>Personne autorisée 2</mat-card-title>
+                          </mat-card-header>
+                          <mat-card-content>
+                            <div class="row">
+                              <div class="col-md-6 mb-3">
+                                <mat-form-field appearance="outline" class="custom-form-field">
+                                  <mat-label>Nom</mat-label>
+                                  <input matInput formControlName="personneAutorisee2Nom">
+                                </mat-form-field>
+                              </div>
+                              <div class="col-md-6 mb-3">
+                                <mat-form-field appearance="outline" class="custom-form-field">
+                                  <mat-label>Prénom</mat-label>
+                                  <input matInput formControlName="personneAutorisee2Prenom">
+                                </mat-form-field>
+                              </div>
+                            </div>
+                          </mat-card-content>
+                        </mat-card>
+                      }
+                    </div>
+
+                    <div class="step-actions">
+                      <button mat-stroked-button color="basic" matStepperPrevious>
+                        <mat-icon>arrow_back</mat-icon>
+                        Retour
+                      </button>
+                      <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="basicInfoForm.invalid || optionsForm.invalid">
+                        <mat-icon>save</mat-icon>
+                        Mettre à jour
+                      </button>
+                    </div>
+                  </form>
+                </mat-step>
+              </mat-horizontal-stepper>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

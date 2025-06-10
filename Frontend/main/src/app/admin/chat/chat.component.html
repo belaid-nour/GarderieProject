@@ -1,0 +1,96 @@
+<section class="content">
+  <div class="content-block">
+    @for (breadscrum of breadscrums; track breadscrum) {
+    <div class="block-header">
+      <app-breadcrumb
+        [title]="breadscrum.title"
+        [items]="breadscrum.items"
+    >
+      </app-breadcrumb>
+    </div>}
+
+    <div class="row">
+      <div class="col-12">
+        <div class="admin-chat-container">
+
+          <!-- En-tête -->
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="text-primary fw-bold">📄 Liste des réclamations</h2>
+          </div>
+
+          <!-- Filtres -->
+          <div class="mb-3">
+            <button
+              class="btn btn-outline-primary me-2"
+              [class.active]="filtre === 'tous'"
+              (click)="filtre = 'tous'"
+            >
+              Tous
+            </button>
+            <button
+              class="btn btn-outline-warning me-2"
+              [class.active]="filtre === 'en-attente'"
+              (click)="filtre = 'en-attente'"
+            >
+              🕒 En attente
+            </button>
+            <button
+              class="btn btn-outline-success"
+              [class.active]="filtre === 'traite'"
+              (click)="filtre = 'traite'"
+            >
+              ✅ Traité
+            </button>
+          </div>
+
+          <!-- Cartes de réclamations -->
+          <div *ngFor="let msg of messagesFiltres" class="card shadow-sm mb-4 border-0 rounded-4">
+            <div class="card-body">
+              <h4 class="text-dark mb-2">{{ msg.objet }}</h4>
+              <p class="text-muted mb-3">{{ msg.message }}</p>
+
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <div>
+                  <p class="mb-0"><strong>👤 Parent :</strong> {{ msg.parentNomComplet }}</p>
+                  <p class="text-muted small">📅 Envoyé le {{ msg.dateEnvoi | date: 'medium' }}</p>
+                </div>
+
+                <div>
+                  <button
+                    class="btn btn-sm"
+                    [ngClass]="msg.traite ? 'btn-outline-warning' : 'btn-outline-success'"
+                    (click)="changerStatut(msg)"
+                  >
+                    {{ msg.traite ? '↩️ Marquer en attente' : '✅ Marquer comme traité' }}
+                  </button>
+
+                  <button
+                    class="btn btn-sm btn-outline-primary ms-2"
+                    (click)="selectionnerReclamation(msg)"
+                  >
+                    💬 Répondre
+                  </button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Zone de réponse (visible seulement si une réclamation est sélectionnée) -->
+          <div *ngIf="reclamationSelectionnee" class="card shadow-sm p-3 mb-4 border rounded-4">
+            <h5>Répondre à : {{ reclamationSelectionnee.objet }}</h5>
+            <textarea
+              [(ngModel)]="reponseTexte"
+              rows="4"
+              class="form-control mb-3"
+              placeholder="Tapez votre réponse ici..."
+            ></textarea>
+            <button class="btn btn-success" (click)="envoyerReponse()">Envoyer la réponse</button>
+            <button class="btn btn-secondary ms-2" (click)="annulerReponse()">Annuler</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

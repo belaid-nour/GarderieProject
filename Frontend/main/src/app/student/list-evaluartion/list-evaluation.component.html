@@ -1,0 +1,190 @@
+<section class="content">
+  <div class="content-block">
+    <div class="block-header">
+      <app-breadcrumb
+        [title]="'Évaluations des Enfants'"
+        [items]="['Scolarité']"
+        [active_item]="'Évaluations'">
+      </app-breadcrumb>
+    </div>
+
+    <!-- Header with summary -->
+    <div class="dashboard-header">
+      <div class="summary-card">
+        <div class="summary-icon">
+          <mat-icon>assessment</mat-icon>
+        </div>
+        <div class="summary-content">
+          <h2>Suivi des évaluations</h2>
+          <p>Analyse détaillée des performances académiques</p>
+        </div>
+      </div>
+
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-value">{{ totalEvaluations }}</div>
+          <div class="metric-label">Évaluations</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-value">{{ averageConfidence | percent:'1.0-1' }}</div>
+          <div class="metric-label">Confiance moyenne</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-value">{{ positivePercentage | percent:'1.0-1' }}</div>
+          <div class="metric-label">Positives</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="evaluation-container">
+      <!-- Loading State -->
+      <div *ngIf="loading" class="loading-state">
+        <mat-spinner diameter="50"></mat-spinner>
+        <p>Chargement des données...</p>
+      </div>
+
+      <!-- Error State -->
+      <div *ngIf="!loading && errorMessage" class="error-state">
+        <mat-icon>error_outline</mat-icon>
+        <h3>Erreur de chargement</h3>
+        <p>{{ errorMessage }}</p>
+        <button mat-raised-button color="primary" (click)="loadEvaluations()">
+          <mat-icon>refresh</mat-icon>
+          Réessayer
+        </button>
+      </div>
+
+      <!-- Content -->
+      <div *ngIf="!loading && !errorMessage">
+        <div *ngFor="let item of enfantsEvaluations" class="child-section">
+          <div class="child-header">
+            <div class="child-info">
+              <mat-icon class="child-icon">person</mat-icon>
+              <div>
+                <h3>{{ item.enfant.prenom }} {{ item.enfant.nom }}</h3>
+                <div class="child-meta">
+                  <span class="badge">
+                    <mat-icon>school</mat-icon>
+                    {{ item.enfant.niveau || 'Non spécifié' }}
+                  </span>
+                  <span class="badge">
+                    <mat-icon>assignment</mat-icon>
+                    {{ item.evaluations.length }} évaluation(s)
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="child-actions">
+
+
+            </div>
+          </div>
+
+          <div *ngIf="item.evaluations.length > 0">
+            <div class="table-container mat-elevation-z2">
+              <table mat-table [dataSource]="item.evaluations" class="evaluation-table">
+                <!-- Date Column -->
+                <ng-container matColumnDef="date">
+                  <th mat-header-cell *matHeaderCellDef>Date</th>
+                  <td mat-cell *matCellDef="let eval">
+                    <div class="date-cell">
+                      <mat-icon>event</mat-icon>
+                      {{ eval.date | date:'dd/MM/yyyy' }}
+                    </div>
+                  </td>
+                </ng-container>
+
+                <!-- Séance Column -->
+                <ng-container matColumnDef="seance">
+                  <th mat-header-cell *matHeaderCellDef>Séance</th>
+                  <td mat-cell *matCellDef="let eval">
+                    <div class="seance-cell">
+                      <mat-icon>assignment</mat-icon>
+                      #{{ eval.seanceId }}
+                    </div>
+                  </td>
+                </ng-container>
+
+                <!-- Sentiment Column -->
+                <ng-container matColumnDef="sentiment">
+                  <th mat-header-cell *matHeaderCellDef>Analyse</th>
+                  <td mat-cell *matCellDef="let eval">
+                    <div class="sentiment-cell" [ngClass]="getSentimentClass(eval.sentiment)">
+                      <mat-icon *ngIf="getSentimentIcon(eval.sentiment)">{{ getSentimentIcon(eval.sentiment) }}</mat-icon>
+                      {{ eval.sentiment || 'Non analysé' }}
+                    </div>
+                  </td>
+                </ng-container>
+
+                <!-- Confidence Column -->
+                <ng-container matColumnDef="confidence">
+                  <th mat-header-cell *matHeaderCellDef>Confiance</th>
+                  <td mat-cell *matCellDef="let eval">
+                    <div class="confidence-cell">
+                      <mat-progress-bar
+                        mode="determinate"
+                        [value]="eval.confidence * 100"
+                        [color]="getConfidenceColor(eval.confidence)">
+                      </mat-progress-bar>
+                      <span>{{ eval.confidence | percent:'1.0-1' }}</span>
+                    </div>
+                  </td>
+                </ng-container>
+
+                <!-- Thèmes Column -->
+                <ng-container matColumnDef="themes">
+                  <th mat-header-cell *matHeaderCellDef>Thèmes</th>
+                  <td mat-cell *matCellDef="let eval">
+                    <div class="themes-cell">
+                      <span *ngFor="let theme of eval.themes || []" class="theme-badge">
+                        {{ theme }}
+                      </span>
+                      <span *ngIf="!eval.themes || eval.themes.length === 0" class="no-data">
+                        Aucun thème
+                      </span>
+                    </div>
+                  </td>
+                </ng-container>
+
+                <!-- Commentaire Column -->
+                <ng-container matColumnDef="commentaire">
+                  <th mat-header-cell *matHeaderCellDef>Commentaire</th>
+                  <td mat-cell *matCellDef="let eval">
+                    <div class="comment-cell">
+                      <p>{{ eval.commentaire || 'Aucun commentaire' }}</p>
+                    </div>
+                  </td>
+                </ng-container>
+
+                <!-- Actions Column -->
+                <ng-container matColumnDef="actions">
+                  <th mat-header-cell *matHeaderCellDef class="actions-header">Actions</th>
+                  <td mat-cell *matCellDef="let eval" class="actions-cell">
+                    <button mat-icon-button>
+                      <mat-icon>visibility</mat-icon>
+                    </button>
+                    <button mat-icon-button>
+                      <mat-icon>download</mat-icon>
+                    </button>
+                  </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+              </table>
+            </div>
+          </div>
+
+          <!-- Empty State -->
+          <div *ngIf="item.evaluations.length === 0" class="empty-state">
+            <div class="empty-content">
+              <mat-icon>info</mat-icon>
+              <h3>Aucune évaluation disponible</h3>
+              <p>Cet enfant n'a pas encore d'évaluation enregistrée</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

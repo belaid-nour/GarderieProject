@@ -1,0 +1,61 @@
+<div class="dialog-header">
+  <h2 mat-dialog-title>
+    {{isEditMode ? 'Modifier Classe' : 'Nouvelle Classe'}}
+  </h2>
+  <button mat-icon-button (click)="onCancel()">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<mat-dialog-content>
+  <form [formGroup]="classeForm" class="classe-form">
+    <mat-form-field appearance="outline">
+      <mat-label>Nom de la classe</mat-label>
+      <input matInput formControlName="nom" required>
+      <mat-error *ngIf="classeForm.get('nom')?.hasError('required')">
+        Ce champ est obligatoire
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Niveau</mat-label>
+      <mat-select formControlName="niveau" required>
+        <mat-option value="Maternelle">Maternelle</mat-option>
+        <mat-option value="Primaire">Primaire</mat-option>
+        <mat-option value="Collège">Collège</mat-option>
+        <mat-option value="Lycée">Lycée</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Année Scolaire</mat-label>
+      <input matInput formControlName="annee"
+             placeholder="Ex: 2023-2024" required>
+      <mat-error *ngIf="classeForm.get('annee')?.hasError('required')">
+        Ce champ est obligatoire
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Effectif Maximum</mat-label>
+      <input matInput type="number"
+             formControlName="effectifMax"
+             min="1" required>
+      <mat-error *ngIf="classeForm.get('effectifMax')?.hasError('required')">
+        Ce champ est obligatoire
+      </mat-error>
+      <mat-error *ngIf="classeForm.get('effectifMax')?.hasError('min')">
+        L'effectif doit être supérieur à 0
+      </mat-error>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Annuler</button>
+  <button mat-raised-button color="primary"
+          (click)="onSubmit()"
+          [disabled]="classeForm.invalid">
+    {{isEditMode ? 'Modifier' : 'Créer'}}
+  </button>
+</mat-dialog-actions>

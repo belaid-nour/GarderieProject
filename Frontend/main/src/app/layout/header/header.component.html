@@ -1,0 +1,97 @@
+<nav #navbar class="navbar active">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a href="#" onClick="return false;" class="navbar-toggle collapsed"
+        (click)="isNavbarCollapsed = !isNavbarCollapsed" aria-expanded="false"></a>
+      <a href="#" onClick="return false;" class="bars" (click)="mobileMenuSidebarOpen($event,'overlay-open')"></a>
+
+      <a class="navbar-brand" [routerLink]="homePage">
+        <img src="assets/images/log1.png" alt="Logo">
+        <span class="logo-name">Garderie</span>
+      </a>
+    </div>
+
+    <div class="collapse navbar-collapse" [ngClass]="isNavbarCollapsed ? '' : 'show'">
+      <ul class="float-start collapse-menu-icon">
+        <li>
+          <button mat-icon-button (click)="callSidemenuCollapse()" class="sidemenu-collapse nav-notification-icons">
+            <i class="material-icons-outlined icon-color">menu</i>
+          </button>
+        </li>
+      </ul>
+
+      <ul class="nav navbar-nav navbar-right">
+        <li class="fullscreen">
+          <button mat-icon-button class="nav-notification-icons" (click)="callFullscreen()">
+            <i class="material-icons-outlined icon-color">fullscreen</i>
+          </button>
+        </li>
+
+        <li>
+          <button mat-icon-button [matMenuTriggerFor]="notificationMenu" class="nav-notification-icons">
+            <i class="material-icons-outlined icon-color">notifications_active</i>
+            @if (unreadCount > 0) {
+              <span class="badge bg-danger">{{ unreadCount }}</span>
+            }
+          </button>
+          <mat-menu #notificationMenu="matMenu" class="nfc-menu">
+            <div class="nfc-header">
+              <h5>Notifications</h5>
+              <button (click)="markAllAsRead()">Tout marquer comme lu</button>
+            </div>
+            <div class="nfc-dropdown">
+              <ng-scrollbar style="height: 350px" visibility="hover">
+                @if (loading) {
+                  <div class="loading-spinner"></div>
+                } @else {
+                  <div class="noti-list header-menu">
+                    <div class="menu">
+                      @for (notification of notifications; track notification.id) {
+                        <button mat-menu-item [ngClass]="[notification.status]" (click)="markNotificationAsRead(notification.id)">
+                          <div class="notification-icon">
+                            <i class="material-icons-outlined">{{ notification.icon }}</i>
+                          </div>
+                          <span class="menu-info">
+                            <span class="menu-title">{{ notification.message }}</span>
+                            <span class="menu-desc">
+                              <mat-icon>schedule</mat-icon>
+                            </span>
+                          </span>
+                        </button>
+                      }
+                      @empty {
+                        <div class="no-notifications">Aucune notification</div>
+                      }
+                    </div>
+                  </div>
+                }
+              </ng-scrollbar>
+            </div>
+          </mat-menu>
+        </li>
+
+        <li class="nav-item user_profile">
+          <button mat-button [matMenuTriggerFor]="profileMenu" class="profile-button">
+            <div class="profile-container">
+              <img src="assets/images/user/PS2.jpg" class="static-profile-img" alt="Profil">
+            </div>
+          </button>
+          <mat-menu #profileMenu="matMenu" class="profile-menu">
+            <div class="noti-list">
+              <div class="menu">
+                <div class="user_dw_menu">
+                  <button mat-menu-item (click)="logout()" class="logout-item">
+                    <span class="logout-content">
+                      <app-feather-icons icon="log-out" class="logout-icon"></app-feather-icons>
+                      <span class="logout-text">Déconnexion</span>
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </mat-menu>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

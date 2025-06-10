@@ -1,0 +1,77 @@
+<section class="content">
+  <div class="content-block">
+    <div class="block-header">
+      <app-breadcrumb [title]="isEditMode ? 'Modifier Classe' : 'Nouvelle Classe'"></app-breadcrumb>
+    </div>
+
+    <div class="row clearfix">
+      <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+        <div class="card">
+          <div class="header">
+            <h2>{{ isEditMode ? 'Modification de Classe' : 'Création de Classe' }}</h2>
+          </div>
+
+          <div class="body">
+            <form [formGroup]="classeForm" (ngSubmit)="onSubmit()" class="m-4">
+              <div class="row">
+                <div class="col-xl-6 mb-2">
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Nom de la classe</mat-label>
+                    <input matInput formControlName="nom" required>
+                    <mat-error *ngIf="nom?.hasError('required')">Le nom est requis</mat-error>
+                  </mat-form-field>
+                </div>
+
+                <div class="col-xl-6 mb-2">
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Niveau scolaire</mat-label>
+                    <mat-select formControlName="niveau" required>
+                      <mat-option *ngFor="let niveau of niveauxOptions" [value]="niveau">
+                        {{ niveau }}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="niveau?.hasError('required')">Sélection requise</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-xl-6 mb-2">
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Année scolaire</mat-label>
+                    <mat-select formControlName="annee" required>
+                      <mat-option *ngFor="let annee of anneesOptions" [value]="annee">
+                        {{ annee }}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="annee?.hasError('required')">Sélection requise</mat-error>
+                  </mat-form-field>
+                </div>
+
+                <div class="col-xl-6 mb-2">
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Effectif maximum</mat-label>
+                    <input matInput type="number" formControlName="effectifMax" min="1" required>
+                    <mat-error *ngIf="effectifMax?.hasError('required')">Champ requis</mat-error>
+                    <mat-error *ngIf="effectifMax?.hasError('min')">Minimum 1 élève</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-xl-12 mb-2 text-end">
+                  <button mat-flat-button color="warn" type="button" (click)="onCancel()" class="me-2">
+                    Annuler
+                  </button>
+                  <button mat-flat-button color="primary" type="submit" [disabled]="classeForm.invalid">
+                    {{ isEditMode ? 'Mettre à jour' : 'Créer' }}
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

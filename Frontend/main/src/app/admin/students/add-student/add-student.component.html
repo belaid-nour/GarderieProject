@@ -1,0 +1,147 @@
+<!-- add-student.component.html -->
+<section class="content">
+  <div class="content-block">
+    <div class="block-header">
+      <app-breadcrumb [title]="breadscrums[0].title" [items]="breadscrums[0].items" [active_item]="breadscrums[0].active">
+      </app-breadcrumb>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+          <!-- Table Header -->
+          <div class="materialTableHeader">
+            <div class="left">
+              <ul class="header-buttons-left">
+                <li class="tbl-title">
+                  <h2>Liste des parents</h2>
+                </li>
+                <li class="tbl-search-box">
+                  <label><i class="material-icons search-icon">search</i></label>
+                  <input type="text" #filter placeholder="Filtrer..." (keyup)="applyFilter($event)"
+                         class="search-field" aria-label="Search">
+                </li>
+              </ul>
+            </div>
+            <div class="right">
+              <ul class="tbl-export-btn">
+                <li>
+                  <button mat-icon-button (click)="addNew()" matTooltip="Ajouter parent" class="col-green">
+                    <mat-icon>add_circle_outline</mat-icon>
+                  </button>
+                </li>
+                <li>
+                  <button mat-icon-button (click)="exportExcel()" matTooltip="Exporter Excel" class="col-blue">
+                    <mat-icon>file_download</mat-icon>
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Table -->
+          <div class="responsive_table">
+            <table mat-table [dataSource]="dataSource" matSort class="mat-cell advance-table">
+
+              <!-- Colonnes -->
+              <ng-container *ngFor="let col of columnDefinitions" [matColumnDef]="col.def">
+                <mat-header-cell *matHeaderCellDef="col.type !== 'action'">
+                  {{col.label}}
+                </mat-header-cell>
+                <mat-cell *matCellDef="let parent">
+                  <ng-container [ngSwitch]="col.def">
+                    <span *ngSwitchCase="'compteVerifie'" class="badge"
+                      [class.badge-success]="parent.compteVerifie"
+                      [class.badge-danger]="!parent.compteVerifie">
+                      {{ parent.compteVerifie ? 'Activé' : 'Désactivé' }}
+                    </span>
+
+                    <span *ngSwitchCase="'email'">
+                      <mat-icon class="tbl-icon col-red">mail</mat-icon>
+                      <a href="mailto:{{ parent.email }}">{{ parent.email }}</a>
+                    </span>
+
+                    <span *ngSwitchCase="'telephone'">
+                      <mat-icon class="tbl-icon col-green">call</mat-icon>
+                      <a *ngIf="parent.telephone" href="tel:{{ parent.telephone }}">{{ parent.telephone }}</a>
+                      <span *ngIf="!parent.telephone">-</span>
+                    </span>
+
+                    <span *ngSwitchCase="'actions'">
+                      <button mat-raised-button color="primary" (click)="selectParent(parent)"
+                              class="action-button">
+                        <mat-icon>add_circle</mat-icon>
+                        Ajouter enfant
+                      </button>
+                    </span>
+
+                    <span *ngSwitchDefault>{{ parent[col.def] || '-' }}</span>
+                  </ng-container>
+                </mat-cell>
+              </ng-container>
+
+              <mat-header-row *matHeaderRowDef="getDisplayedColumns()"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: getDisplayedColumns();"></mat-row>
+            </table>
+
+            <!-- Formulaire ajout enfant -->
+            <div *ngIf="selectedParent" class="child-form-container">
+              <h3 class="form-title">Ajouter un enfant pour {{selectedParent.fullName}}</h3>
+
+              <div class="form-grid">
+                <mat-form-field>
+                  <input matInput [(ngModel)]="newChild.nom" placeholder="Nom" required>
+                </mat-form-field>
+
+                <mat-form-field>
+                  <input matInput [(ngModel)]="newChild.prenom" placeholder="Prénom" required>
+                </mat-form-field>
+
+                <mat-form-field>
+                  <input matInput [(ngModel)]="newChild.dateNaissance" type="date" required>
+                </mat-form-field>
+
+                <mat-form-field>
+                  <mat-label>niveau</mat-label>
+                  <mat-select [(ngModel)]="newChild.niveau" required>
+                    <mat-option *ngFor="let niveau of niveaux" [value]="niveau">
+                      {{niveau}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <div class="radio-group">
+                  <mat-label>Sexe</mat-label>
+                  <mat-radio-group [(ngModel)]="newChild.sexe">
+                    <mat-radio-button value="M">Masculin</mat-radio-button>
+                    <mat-radio-button value="F">Féminin</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+
+                <div class="checkboxes">
+                  <mat-checkbox [(ngModel)]="newChild.bus">Bus</mat-checkbox>
+                  <mat-checkbox [(ngModel)]="newChild.club">Club</mat-checkbox>
+                  <mat-checkbox [(ngModel)]="newChild.gouter">Goûter</mat-checkbox>
+                </div>
+
+                <mat-form-field class="full-width">
+                  <textarea matInput [(ngModel)]="newChild.allergies"
+                            placeholder="Allergies connues" rows="3"></textarea>
+                </mat-form-field>
+
+                <div class="form-actions">
+                  <button mat-stroked-button (click)="cancelAddChild()">Annuler</button>
+                  <button mat-raised-button color="primary" (click)="addChild()">
+                    <mat-icon>save</mat-icon> Enregistrer
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

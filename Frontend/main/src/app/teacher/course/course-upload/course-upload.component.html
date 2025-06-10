@@ -1,0 +1,112 @@
+<section class="content">
+  <div class="content-block">
+    <div class="block-header">
+      <app-breadcrumb
+        [title]="'Nouveau cours'"
+        [items]="['Accueil', 'Cours', 'Publication']"
+    >
+      </app-breadcrumb>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+ <div class="card-header bg-blue-grey text-white">
+            <h2 class="text-white mb-0">
+              <mat-icon class="header-icon">cloud_upload</mat-icon>
+              Publication de nouveau cours
+            </h2>
+          </div>
+
+          <div class="card-body">
+            <form [formGroup]="uploadForm" (ngSubmit)="onSubmit()" class="upload-form">
+              <!-- Titre -->
+              <mat-form-field appearance="outline" class="w-100 mb-4">
+                <mat-label>Titre du cours</mat-label>
+                <input matInput formControlName="title" required>
+                <mat-icon matSuffix>title</mat-icon>
+                <mat-error *ngIf="uploadForm.get('title')?.hasError('required')">
+                  Le titre est obligatoire
+                </mat-error>
+              </mat-form-field>
+
+              <!-- Description -->
+              <mat-form-field appearance="outline" class="w-100 mb-4">
+                <mat-label>Description</mat-label>
+                <textarea matInput
+                        formControlName="description"
+                        rows="4"
+                        required></textarea>
+                <mat-icon matSuffix>description</mat-icon>
+                <mat-error *ngIf="uploadForm.get('description')?.hasError('required')">
+                  La description est obligatoire
+                </mat-error>
+              </mat-form-field>
+
+              <!-- Sélection de classe -->
+              <div class="class-selection mb-4">
+                <ng-container *ngIf="!isLoadingClasses; else loadingClasses">
+                  <mat-form-field appearance="outline" class="w-100">
+                    <mat-label>Classe associée</mat-label>
+                    <mat-select formControlName="classeId" required>
+                      <mat-option
+                        *ngFor="let classe of classes"
+                        [value]="classe.id">
+                        {{ classe.nom | titlecase }} - {{ classe.niveau | uppercase }} ({{ classe.annee }})
+                      </mat-option>
+                    </mat-select>
+                    <mat-icon matSuffix>group</mat-icon>
+                    <mat-error *ngIf="uploadForm.get('classeId')?.hasError('required')">
+                      Sélectionnez une classe
+                    </mat-error>
+                  </mat-form-field>
+                </ng-container>
+
+                <ng-template #loadingClasses>
+                  <div class="loading-classes d-flex align-items-center text-muted">
+                    <mat-spinner diameter="30" class="me-3"></mat-spinner>
+                    <span>Chargement des classes...</span>
+                  </div>
+                </ng-template>
+              </div>
+
+              <!-- Upload de fichier -->
+              <div class="file-upload-section mb-5">
+                <input type="file"
+                      (change)="onFileSelected($event)"
+                      #fileInput
+                      hidden
+                      accept=".pdf,.doc,.docx,.ppt,.pptx">
+                <button mat-stroked-button
+                        type="button"
+                        (click)="fileInput.click()"
+                        class="file-button w-100"
+                        color="accent">
+                  <div class="d-flex align-items-center justify-content-center">
+                    <mat-icon class="me-2">attach_file</mat-icon>
+                    {{ selectedFile?.name || 'Sélectionner un fichier (PDF, Word, PowerPoint)' }}
+                  </div>
+                </button>
+              </div>
+
+              <!-- Bouton de soumission -->
+              <div class="submit-section text-end">
+                <button mat-raised-button
+                        color="primary"
+                        type="submit"
+                        class="submit-button"
+                        [disabled]="!uploadForm.valid || isLoading">
+                  <div class="d-flex align-items-center">
+                    <mat-icon class="me-2">{{ isLoading ? 'autorenew' : 'publish' }}</mat-icon>
+                    {{ isLoading ? 'Publication en cours...' : 'Publier le cours' }}
+                  </div>
+                  <mat-spinner *ngIf="isLoading" diameter="20" class="ms-2"></mat-spinner>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

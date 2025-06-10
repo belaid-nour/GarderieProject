@@ -1,0 +1,83 @@
+<div class="container mt-4">
+  <!-- Bouton de retour -->
+  <div class="mb-4">
+    <a routerLink="/classes" class="btn btn-outline-secondary">
+      <i class="bi bi-arrow-left me-2"></i>Retour
+    </a>
+  </div>
+
+  <!-- Sélection de la classe -->
+  <div class="mb-4" *ngIf="!isLoading">
+    <label for="classSelect" class="form-label">Sélectionner une classe :</label>
+    <select
+      id="classSelect"
+      class="form-select"
+      [(ngModel)]="classId"
+      (change)="onClassChange()"
+    >
+      <option *ngFor="let classe of classes" [value]="classe.id">
+        {{ classe.nom }} - {{ classe.niveau }} ({{ classe.annee }})
+      </option>
+    </select>
+  </div>
+
+  <!-- Indicateur de chargement -->
+  <div *ngIf="isLoading" class="text-center my-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Chargement...</span>
+    </div>
+    <p class="mt-2">Chargement des classes...</p>
+  </div>
+
+  <!-- Calendrier -->
+  <div *ngIf="!isLoading" class="card shadow">
+    <div class="card-body">
+      <full-calendar
+        #calendar
+        [options]="calendarOptions"
+        style="width: 100%; height: 600px;">
+      </full-calendar>
+    </div>
+  </div>
+
+  <!-- Modal de détails -->
+  <div *ngIf="selectedEvent" class="modal fade show d-block" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title">{{ selectedEvent.title }}</h5>
+          <button type="button" class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-6">
+              <p><strong>Date :</strong><br>
+                {{ selectedEvent.start | date:'dd/MM/yyyy' }}
+              </p>
+            </div>
+            <div class="col-md-6">
+              <p><strong>Horaire :</strong><br>
+                {{ selectedEvent.start | date:'HH:mm' }} -
+                {{ selectedEvent.end | date:'HH:mm' }}
+              </p>
+            </div>
+          </div>
+          <p><strong>Lieu :</strong><br>
+            {{ selectedEvent.extendedProps.lieu }}
+          </p>
+          <p><strong>Enseignant :</strong><br>
+            {{ selectedEvent.extendedProps.enseignant }}
+          </p>
+          <p *ngIf="selectedEvent.extendedProps.recurrence !== 'AUCUNE'">
+            <strong>Récurrence :</strong>
+            {{ selectedEvent.extendedProps.recurrence | lowercase }}
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="closeModal()">Fermer</button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-backdrop fade show" (click)="closeModal()"></div>
+  </div>
+</div>

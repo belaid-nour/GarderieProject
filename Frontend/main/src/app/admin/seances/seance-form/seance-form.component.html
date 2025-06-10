@@ -1,0 +1,136 @@
+<section class="content">
+  <div class="content-block">
+    <div class="block-header">
+      <app-breadcrumb
+        [title]="isEditMode ? 'Modifier une Séance' : 'Créer une Séance'"
+        [items]="['Planning']"
+        [active_item]="isEditMode ? 'Modifier Séance' : 'Créer Séance'">
+      </app-breadcrumb>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card shadow-sm">
+          <div class="card-header">
+            <h2 class="mb-0">{{ isEditMode ? 'Modifier' : 'Créer' }} une Séance</h2>
+          </div>
+
+          <div class="card-body p-4">
+            <!-- Indicateur de Chargement -->
+            <div *ngIf="isLoading" class="text-center my-5">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Chargement...</span>
+              </div>
+            </div>
+
+            <!-- Formulaire -->
+            <form *ngIf="!isLoading" [formGroup]="seanceForm" (ngSubmit)="onSubmit()" class="form-container">
+              <div class="row mb-3">
+                <!-- Nom -->
+                <div class="col-md-6">
+                  <label for="nom" class="form-label">Nom</label>
+                  <input type="text" class="form-control" id="nom" formControlName="nom" placeholder="Nom de la séance">
+                  <div *ngIf="seanceForm.get('nom')?.invalid && seanceForm.get('nom')?.touched" class="text-danger">
+                    Le nom est obligatoire
+                  </div>
+                </div>
+
+                <!-- Lieu -->
+                <div class="col-md-6">
+                  <label for="lieu" class="form-label">Lieu</label>
+                  <input type="text" class="form-control" id="lieu" formControlName="lieu" placeholder="Lieu de la séance">
+                  <div *ngIf="seanceForm.get('lieu')?.invalid && seanceForm.get('lieu')?.touched" class="text-danger">
+                    Lieu requis
+                  </div>
+                </div>
+              </div>
+
+              <!-- Horaires -->
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="horaireDebut" class="form-label">Horaire Début</label>
+                  <input type="time" class="form-control" id="horaireDebut" formControlName="horaireDebut">
+                  <div *ngIf="seanceForm.get('horaireDebut')?.invalid && seanceForm.get('horaireDebut')?.touched" class="text-danger">
+                    Horaire requis
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label for="horaireFin" class="form-label">Horaire Fin</label>
+                  <input type="time" class="form-control" id="horaireFin" formControlName="horaireFin">
+                  <div *ngIf="seanceForm.get('horaireFin')?.invalid && seanceForm.get('horaireFin')?.touched" class="text-danger">
+                    Horaire requis
+                  </div>
+                </div>
+              </div>
+
+              <!-- Récurrence -->
+              <div class="row mb-3">
+                <div class="col-md-4">
+                  <label for="recurrenceType" class="form-label">Type de récurrence</label>
+                  <select class="form-select" id="recurrenceType" formControlName="recurrenceType">
+                    <option value="AUCUNE">Aucune</option>
+                    <option value="HEBDOMADAIRE">Hebdomadaire</option>
+                    <option value="MENSUELLE">Mensuelle</option>
+                  </select>
+                </div>
+
+                <div class="col-md-4">
+                  <label for="startDate" class="form-label">Date de début</label>
+                  <input type="date" class="form-control" id="startDate" formControlName="startDate">
+                  <div *ngIf="seanceForm.get('startDate')?.invalid && seanceForm.get('startDate')?.touched" class="text-danger">
+                    Date requise
+                  </div>
+                </div>
+
+                <div class="col-md-4">
+                  <label for="endDate" class="form-label">Date de fin</label>
+                  <input type="date" class="form-control" id="endDate" formControlName="endDate">
+                  <div *ngIf="seanceForm.get('endDate')?.invalid && seanceForm.get('endDate')?.touched" class="text-danger">
+                    Date requise pour les récurrences
+                  </div>
+                </div>
+              </div>
+
+              <!-- Sélecteurs -->
+              <div class="row mb-4">
+                <div class="col-md-6">
+                  <label for="classeId" class="form-label">Classe</label>
+                  <select class="form-select" id="classeId" formControlName="classeId">
+                    <option value="" disabled>Sélectionnez une classe</option>
+                    <option *ngFor="let classe of classes" [value]="classe.id">{{ classe.nom }}</option>
+                  </select>
+                  <div *ngIf="seanceForm.get('classeId')?.invalid && seanceForm.get('classeId')?.touched" class="text-danger">
+                    Sélection obligatoire
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <label for="enseignantId" class="form-label">Enseignant</label>
+                  <select class="form-select" id="enseignantId" formControlName="enseignantId">
+                    <option value="" disabled>Sélectionnez un enseignant</option>
+                    <option *ngFor="let enseignant of enseignants" [value]="enseignant.id_utilisateur">
+                      {{ enseignant.prenom }} {{ enseignant.nom }}
+                    </option>
+                  </select>
+                  <div *ngIf="seanceForm.get('enseignantId')?.invalid && seanceForm.get('enseignantId')?.touched" class="text-danger">
+                    Sélection obligatoire
+                  </div>
+                </div>
+              </div>
+
+              <!-- Boutons -->
+              <div class="d-flex justify-content-end gap-3">
+                <button type="submit" class="btn btn-success" [disabled]="!seanceForm.valid || isLoading">
+                  {{ isEditMode ? 'Mettre à jour' : 'Créer' }}
+                  <span *ngIf="isLoading" class="spinner-border spinner-border-sm"></span>
+                </button>
+                <a routerLink="/seances" class="btn btn-outline-secondary">Annuler</a>
+              </div>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

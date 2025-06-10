@@ -1,0 +1,118 @@
+.admin-chat-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+  h2 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 2rem;
+    font-size: 2rem;
+    font-weight: 600;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 0.5rem;
+    display: inline-block;
+    margin-left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1.5rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background-color: #fff;
+
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .card-body {
+      padding: 1.5rem;
+      position: relative;
+
+      h5 {
+        color: #3498db;
+        font-size: 1.25rem;
+        margin-bottom: 0.75rem;
+        font-weight: 600;
+      }
+
+      p {
+        color: #34495e;
+        line-height: 1.6;
+        margin-bottom: 1rem;
+      }
+
+      strong {
+        color: #2c3e50;
+        font-weight: 600;
+      }
+
+      small {
+        color: #7f8c8d;
+        font-size: 0.85rem;
+        display: inline-block;
+        margin-right: 1rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .status-badge {
+        position: absolute;
+        top: 1.5rem;
+        right: 1.5rem;
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+
+        &.pending {
+          background-color: #fff3cd;
+          color: #856404;
+        }
+
+        &.treated {
+          background-color: #d4edda;
+          color: #155724;
+        }
+      }
+
+      .auto-response {
+        background-color: #f8f9fa;
+        border-left: 4px solid #3498db;
+        padding: 0.75rem;
+        margin-top: 1rem;
+        border-radius: 0 4px 4px 0;
+        font-size: 0.9rem;
+        color: #495057;
+
+        &::before {
+          content: "Réponse automatique:";
+          display: block;
+          font-weight: 600;
+          color: #3498db;
+          margin-bottom: 0.25rem;
+        }
+      }
+    }
+  }
+
+  // Responsive adjustments
+  @media (max-width: 768px) {
+    padding: 1rem;
+
+    .card .card-body {
+      padding: 1rem;
+
+      .status-badge {
+        position: static;
+        display: inline-block;
+        margin-bottom: 0.5rem;
+      }
+    }
+  }
+}

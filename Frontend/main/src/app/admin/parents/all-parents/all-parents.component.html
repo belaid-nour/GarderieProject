@@ -1,0 +1,186 @@
+<section class="content">
+  <div class="content-block">
+    @for (breadscrum of breadscrums; track breadscrum) {
+    <div class="block-header">
+      <app-breadcrumb [title]="breadscrum.title" [items]="breadscrum.items" [active_item]="breadscrum.active">
+      </app-breadcrumb>
+    </div>
+    }
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="card">
+          <!-- Header Section -->
+          <div class="materialTableHeader">
+            <div class="left">
+              <ul class="header-buttons-left">
+                <li class="tbl-title">
+                  <h2>Liste des parents</h2>
+                </li>
+                <li class="tbl-search-box">
+                  <label><i class="material-icons search-icon">search</i></label>
+                  <input type="text" #filter placeholder="Filtrer..." (keyup)="applyFilter($event)" class="search-field"
+                    aria-label="Search" />
+                </li>
+              </ul>
+            </div>
+            <div class="right">
+              <ul class="tbl-export-btn">
+                <li>
+                  <button mat-icon-button (click)="addNew()" matTooltip="Ajouter parent" class="col-green">
+                    <mat-icon>add_circle_outline</mat-icon>
+                  </button>
+                </li>
+                <li>
+                  <button mat-icon-button [disabled]="!selection.hasValue()" (click)="deleteSelected()"
+                    matTooltip="Supprimer sélection" class="col-red">
+                    <mat-icon>delete_outline</mat-icon>
+                  </button>
+                </li>
+                <li>
+                  <button mat-icon-button (click)="exportExcel()" matTooltip="Exporter Excel" class="col-blue">
+                    <mat-icon>file_download</mat-icon>
+                  </button>
+                </li>
+                <li>
+                  <button mat-icon-button matTooltip="Afficher les colonnes">
+                    <mat-icon>view_column</mat-icon>
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Table Section -->
+          <div class="overflow-auto responsive_table">
+            <table mat-table [dataSource]="dataSource" matSort class="mat-cell advance-table">
+
+              <!-- Checkbox -->
+              <ng-container matColumnDef="select">
+                <mat-header-cell *matHeaderCellDef>
+                  <mat-checkbox (change)="masterToggle()" [checked]="selection.hasValue() && isAllSelected()"
+                    [indeterminate]="selection.hasValue() && !isAllSelected()" color="primary">
+                  </mat-checkbox>
+                </mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                  <mat-checkbox (click)="$event.stopPropagation()" (change)="selection.toggle(row)"
+                    [checked]="selection.isSelected(row)" color="primary">
+                  </mat-checkbox>
+                </mat-cell>
+              </ng-container>
+
+              <!-- ID -->
+              <ng-container matColumnDef="id_utilisateur">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>ID</mat-header-cell>
+                <mat-cell *matCellDef="let parent">{{ parent.id_utilisateur }}</mat-cell>
+              </ng-container>
+
+              <!-- Nom complet -->
+              <ng-container matColumnDef="fullName">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Nom complet</mat-header-cell>
+                <mat-cell *matCellDef="let parent">{{ parent.fullName }}</mat-cell>
+              </ng-container>
+
+              <!-- Email -->
+              <ng-container matColumnDef="email">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Email</mat-header-cell>
+                <mat-cell *matCellDef="let parent">
+                  <mat-icon class="tbl-icon col-red">mail</mat-icon>
+                  <a href="mailto:{{ parent.email }}">{{ parent.email }}</a>
+                </mat-cell>
+              </ng-container>
+
+              <!-- Téléphone -->
+              <ng-container matColumnDef="telephone">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Téléphone</mat-header-cell>
+                <mat-cell *matCellDef="let parent">
+                  <mat-icon class="tbl-icon col-green">call</mat-icon>
+                  <a *ngIf="parent.telephone" href="tel:{{ parent.telephone }}">{{ parent.telephone }}</a>
+                  <span *ngIf="!parent.telephone">-</span>
+                </mat-cell>
+              </ng-container>
+
+              <!-- Mot de passe -->
+              <ng-container matColumnDef="motDePasse">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Mot de passe</mat-header-cell>
+                <mat-cell *matCellDef="let parent">{{ parent.motDePasse ? '********' : '-' }}</mat-cell>
+              </ng-container>
+
+              <!-- Adresse -->
+              <ng-container matColumnDef="adresse">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Adresse</mat-header-cell>
+                <mat-cell *matCellDef="let parent">{{ parent.adresse || '-' }}</mat-cell>
+              </ng-container>
+
+              <!-- CIN -->
+              <ng-container matColumnDef="cin">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>CIN</mat-header-cell>
+                <mat-cell *matCellDef="let parent">{{ parent.cin || '-' }}</mat-cell>
+              </ng-container>
+
+              <!-- Nom conjoint -->
+              <ng-container matColumnDef="nomConjoint">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Nom conjoint</mat-header-cell>
+                <mat-cell *matCellDef="let parent">{{ parent.nomConjoint || '-' }}</mat-cell>
+              </ng-container>
+
+              <!-- Prénom conjoint -->
+              <ng-container matColumnDef="prenomConjoint">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Prénom conjoint</mat-header-cell>
+                <mat-cell *matCellDef="let parent">{{ parent.prenomConjoint || '-' }}</mat-cell>
+              </ng-container>
+
+              <!-- Téléphone conjoint -->
+              <ng-container matColumnDef="telephoneConjoint">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Tel. conjoint</mat-header-cell>
+                <mat-cell *matCellDef="let parent">
+                  <a *ngIf="parent.telephoneConjoint" href="tel:{{ parent.telephoneConjoint }}">
+                    {{ parent.telephoneConjoint }}
+                  </a>
+                  <span *ngIf="!parent.telephoneConjoint">-</span>
+                </mat-cell>
+              </ng-container>
+
+              <!-- Situation parentale -->
+              <ng-container matColumnDef="situationParentale">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Situation parentale</mat-header-cell>
+                <mat-cell *matCellDef="let parent">{{ parent.situationParentale || '-' }}</mat-cell>
+              </ng-container>
+
+              <!-- Compte vérifié -->
+              <ng-container matColumnDef="compteVerifie">
+                <mat-header-cell *matHeaderCellDef>État</mat-header-cell>
+                <mat-cell *matCellDef="let parent">
+                  <mat-slide-toggle [checked]="parent.compteVerifie"
+                    (change)="toggleActivation(parent, $event.checked)">
+                    {{ parent.compteVerifie ? 'Activé' : 'Désactivé' }}
+                  </mat-slide-toggle>
+                </mat-cell>
+              </ng-container>
+
+              <!-- Actions -->
+              <ng-container matColumnDef="actions">
+                <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+                <mat-cell *matCellDef="let parent">
+                  <button mat-icon-button color="primary" (click)="editCall(parent)" matTooltip="Modifier">
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                  <button mat-icon-button color="warn" (click)="deleteOne(parent)" matTooltip="Supprimer">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </mat-cell>
+              </ng-container>
+
+              <!-- Table rows -->
+              <mat-header-row *matHeaderRowDef="getDisplayedColumns()"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: getDisplayedColumns();" (contextmenu)="onContextMenu($event, row)">
+              </mat-row>
+            </table>
+
+            <!-- Paginator -->
+            <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

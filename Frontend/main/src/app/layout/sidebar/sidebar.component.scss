@@ -1,0 +1,36 @@
+::ng-deep {
+  .custom-track {
+    background: rgba(0,0,0,0.05) !important;
+    width: 8px !important;
+  }
+
+  .custom-thumb {
+    background: rgba(0,0,0,0.2) !important;
+    border-radius: 4px !important;
+    transition: all 0.2s ease-out !important;
+
+    &:hover {
+      background: rgba(0,0,0,0.3) !important;
+    }
+  }
+}
+
+.user_img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  &-large {
+    width: 48px;
+    height: 48px;
+  }
+}
+
+.user-details {
+  padding: 0 1rem;
+  small.telephone {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+}

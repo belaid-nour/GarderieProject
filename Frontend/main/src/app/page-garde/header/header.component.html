@@ -1,0 +1,45 @@
+<nav #navbar class="navbar" [class.active]="isScrolled">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a href="#" class="navbar-toggle collapsed" (click)="isNavbarCollapsed = !isNavbarCollapsed" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </a>
+      <a class="navbar-brand" routerLink="/">
+        <img src="assets/images/log1.png" alt="Logo" class="logo-img">
+        <span class="logo-name">GardeRire</span>
+      </a>
+    </div>
+
+    <div class="navbar-right" [class.show]="!isNavbarCollapsed">
+      <ul class="nav navbar-nav">
+        <li class="nav-item" [class.active]="currentSection === 'accueil'">
+          <a routerLink="/" fragment="accueil" (click)="scrollTo('accueil'); toggleMenu()">Accueil</a>
+        </li>
+        <li class="nav-item" [class.active]="currentSection === 'apropos'">
+          <a routerLink="/" fragment="apropos" (click)="scrollTo('apropos'); toggleMenu()">À propos</a>
+        </li>
+        <li class="nav-item" [class.active]="currentSection === 'activites'">
+          <a routerLink="/" fragment="activites" (click)="scrollTo('activites'); toggleMenu()">Activités</a>
+        </li>
+        <li class="nav-item" [class.active]="currentSection === 'programmes'">
+          <a routerLink="/" fragment="programmes" (click)="scrollTo('programmes'); toggleMenu()">Blog</a>
+        </li>
+        <li class="nav-item" [class.active]="currentSection === 'temoignages'">
+          <a routerLink="/" fragment="temoignages" (click)="scrollTo('temoignages'); toggleMenu()">Témoignages</a>
+        </li>
+        <li class="nav-item" [class.active]="currentSection === 'contact'">
+          <a routerLink="/" fragment="contact" (click)="scrollTo('contact'); toggleMenu()">Contact</a>
+        </li>
+        <li class="nav-item auth-btn">
+          <a href="/authentication/signin'" class="btn btn-outline" (click)="toggleMenu()">Connexion</a>
+        </li>
+        <li class="nav-item auth-btn">
+          <a href="/authentication/signup'r" class="btn btn-primary" (click)="toggleMenu()">Inscription</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

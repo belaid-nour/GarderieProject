@@ -1,0 +1,381 @@
+// Variables
+$primary: #3f51b5;
+$primary-light: #e8eaf6;
+$primary-dark: #303f9f;
+$success: #4caf50;
+$warning: #ff9800;
+$danger: #f44336;
+$gray-100: #f8f9fa;
+$gray-200: #e9ecef;
+$gray-300: #dee2e6;
+$gray-600: #6c757d;
+$gray-800: #343a40;
+$text-dark: #212529;
+$text-light: #f8f9fa;
+$shadow-sm: 0 2px 4px rgba(0,0,0,0.1);
+$shadow-md: 0 4px 8px rgba(0,0,0,0.1);
+$shadow-lg: 0 8px 16px rgba(0,0,0,0.1);
+$border-radius: 8px;
+$border-radius-lg: 12px;
+
+// Mixins
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.content-block {
+  padding: 2rem;
+}
+
+.block-header {
+  margin-bottom: 1.5rem;
+}
+
+.dashboard-header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+
+  .summary-card {
+    flex: 1;
+    min-width: 300px;
+    background: #ffffff;
+    border-radius: $border-radius-lg;
+    padding: 1.5rem;
+    box-shadow: $shadow-md;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+
+    .summary-icon {
+      background: $primary-light;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      @include flex-center;
+
+      mat-icon {
+        font-size: 32px;
+        width: 32px;
+        height: 32px;
+        color: $primary;
+      }
+    }
+
+    .summary-content {
+      h2 {
+        margin: 0;
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: $primary-dark;
+      }
+
+      p {
+        margin: 0.25rem 0 0 0;
+        color: $gray-600;
+        font-size: 0.95rem;
+      }
+    }
+  }
+
+  .metrics-grid {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    min-width: 300px;
+
+    .metric-card {
+      background: #ffffff;
+      border-radius: $border-radius;
+      padding: 1.25rem 1.5rem;
+      box-shadow: $shadow-sm;
+      text-align: center;
+      min-width: 150px;
+      flex: 1;
+
+      .metric-value {
+        font-size: 1.8rem;
+        font-weight: 600;
+        color: $primary-dark;
+        margin-bottom: 0.25rem;
+      }
+
+      .metric-label {
+        font-size: 0.85rem;
+        color: $gray-600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+    }
+  }
+}
+
+.child-section {
+  background: #ffffff;
+  border-radius: $border-radius-lg;
+  box-shadow: $shadow-md;
+  margin-bottom: 2rem;
+  overflow: hidden;
+}
+
+.child-header {
+  padding: 1.25rem 1.5rem;
+  background: #f8fafd;
+  border-bottom: 1px solid #eaeff5;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+
+  .child-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    .child-icon {
+      background: #e6f7ff;
+      color: #1890ff;
+      border-radius: 50%;
+      padding: 10px;
+      width: 40px;
+      height: 40px;
+      @include flex-center;
+    }
+
+    h3 {
+      margin: 0;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: $primary-dark;
+    }
+
+    .child-meta {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 0.5rem;
+
+      .badge {
+        background: #a79ab5;
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        color: white;
+
+        mat-icon {
+          font-size: 18px;
+          width: 18px;
+          height: 18px;
+        }
+      }
+    }
+  }
+}
+
+.table-container {
+  padding: 1.5rem;
+}
+
+.absence-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+
+  th {
+    background: #f1f5f9;
+    color: $gray-800;
+    font-weight: 600;
+    padding: 1rem 1.25rem;
+    text-align: left;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  td {
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid #f1f5f9;
+    vertical-align: middle;
+  }
+
+  tr:hover {
+    background-color: #f8fafd;
+  }
+
+  .date-cell, .seance-cell {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    mat-icon {
+      color: $gray-600;
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  .badge-justified {
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+
+    &.yes {
+      background: rgba(46, 125, 50, 0.15);
+      color: #2e7d32;
+    }
+
+    &.no {
+      background: rgba(249, 168, 37, 0.15);
+      color: #f9a825;
+    }
+
+    mat-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+    }
+  }
+
+  .actions-cell {
+    display: flex;
+    gap: 0.5rem;
+
+    button {
+      color: $gray-600;
+      width: 36px;
+      height: 36px;
+      @include flex-center;
+      border-radius: 50%;
+
+      &:hover {
+        background: #f1f5f9;
+
+        &.edit {
+          color: $primary;
+        }
+
+        &.delete {
+          color: $danger;
+        }
+      }
+    }
+  }
+}
+
+.loading-state {
+  padding: 3rem;
+  text-align: center;
+  color: $gray-600;
+  background: #ffffff;
+  border-radius: $border-radius-lg;
+  box-shadow: $shadow-md;
+
+  p {
+    margin-top: 1.5rem;
+    font-size: 1.1rem;
+  }
+}
+
+.error-state {
+  padding: 3rem;
+  text-align: center;
+  background: #ffffff;
+  border-radius: $border-radius-lg;
+  box-shadow: $shadow-md;
+
+  mat-icon {
+    font-size: 3rem;
+    width: 3rem;
+    height: 3rem;
+    color: #ef4444;
+  }
+
+  h3 {
+    color: #1e293b;
+    margin: 1.5rem 0 0.5rem;
+    font-size: 1.5rem;
+  }
+
+  p {
+    color: #64748b;
+    margin-bottom: 1.5rem;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  button {
+    font-weight: 500;
+
+    mat-icon {
+      font-size: 1.25rem;
+      width: 1.25rem;
+      height: 1.25rem;
+      margin-right: 0.5rem;
+      color: inherit;
+    }
+  }
+}
+
+.empty-state {
+  padding: 2.5rem;
+  background: #f8fafc;
+  text-align: center;
+
+  .empty-content {
+    max-width: 400px;
+    margin: 0 auto;
+
+    mat-icon {
+      font-size: 3rem;
+      width: 3rem;
+      height: 3rem;
+      color: #94a3b8;
+      margin-bottom: 1rem;
+    }
+
+    h3 {
+      margin: 0 0 0.5rem 0;
+      color: #334155;
+      font-weight: 500;
+    }
+
+    p {
+      margin: 0;
+      color: #64748b;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-header {
+    flex-direction: column;
+  }
+
+  .summary-card, .metric-card {
+    min-width: 100%;
+  }
+
+  .metrics-grid {
+    width: 100%;
+  }
+
+  .child-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .absence-table {
+    display: block;
+    overflow-x: auto;
+  }
+}

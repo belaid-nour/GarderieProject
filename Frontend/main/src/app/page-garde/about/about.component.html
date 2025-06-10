@@ -1,0 +1,26 @@
+<section class="about-section" id="apropos">
+  <div class="container">
+    <div class="about-content">
+      <div class="about-image">
+        <img src="assets/images/enfants-jouent.jpg" alt="Notre garderie">
+      </div>
+
+      <div class="about-text">
+        <h2>Notre approche éducative</h2>
+        <p>Depuis 2010, La Petite Académie offre un cadre éducatif exceptionnel pour les enfants de 6 mois à 5 ans. Notre approche pédagogique innovante combine les meilleures méthodes d'apprentissage préscolaire.</p>
+
+        <div class="about-features">
+          <div class="about-feature" *ngFor="let point of aboutPoints">
+            <i class="fas fa-check"></i>
+            <div>
+              <h4>{{ point.title }}</h4>
+              <p>{{ point.description }}</p>
+            </div>
+          </div>
+        </div>
+
+        <a href="#contact" class="btn btn-primary">En savoir plus</a>
+      </div>
+    </div>
+  </div>
+</section>

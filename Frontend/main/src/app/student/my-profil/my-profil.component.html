@@ -1,0 +1,204 @@
+<section class="content">
+  <div class="content-block">
+    <div class="block-header">
+      <app-breadcrumb
+        [title]="'Mon Profil'"
+        [active_item]="'Détails'">
+      </app-breadcrumb>
+    </div>
+
+    <div class="row clearfix">
+      <div class="welcome-content">
+        <h1>Bonjour, {{ user?.prenom }}! 👋</h1>
+        <p class="welcome-text">
+          Bienvenue sur votre espace personnel. Gérez vos informations,
+          consultez vos paramètres et personnalisez votre expérience.
+        </p>
+      </div>
+      <div class="col-lg-4 col-md-12">
+        <div class="profile-card">
+          <div class="profile-avatar">
+            <div class="avatar-circle">
+              {{ user?.prenom?.charAt(0) }}{{ user?.nom?.charAt(0) }}
+            </div>
+            <div class="profile-header">
+              <h2>{{ user?.prenom }} {{ user?.nom }}</h2>
+              <p class="role-badge">{{ user?.role | titlecase }}</p>
+            </div>
+          </div>
+
+          <div class="profile-info">
+            <div class="info-item">
+              <mat-icon class="icon-gradient">mail</mat-icon>
+              <div>
+                <p class="info-label">Email</p>
+                <p class="info-value">{{ user?.email }}</p>
+              </div>
+            </div>
+
+            <div class="info-item">
+              <mat-icon class="icon-gradient">location_on</mat-icon>
+              <div>
+                <p class="info-label">Adresse</p>
+                <p class="info-value">{{ user?.adresse || 'Non renseignée' }}</p>
+              </div>
+            </div>
+
+            <div class="info-item">
+              <mat-icon class="icon-gradient">phone</mat-icon>
+              <div>
+                <p class="info-label">Téléphone</p>
+                <p class="info-value">{{ user?.telephone || 'Non renseigné' }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-8 col-md-12">
+        <div class="main-card">
+          <mat-tab-group dynamicHeight>
+            <mat-tab label="Détails du profil">
+              <ng-template mat-tab-label>
+                <mat-icon class="tab-icon">person_search</mat-icon>
+                Profil
+              </ng-template>
+
+              <div class="tab-content">
+                <div class="section">
+                  <h3>📝 Informations personnelles</h3>
+                  <div class="detail-grid">
+                    <div class="detail-item">
+                      <label>CIN</label>
+                      <p>{{ user?.cin || 'Non renseigné' }}</p>
+                    </div>
+                    <div class="detail-item">
+                      <label>Situation parentale</label>
+                      <p>{{ user?.situationParentale || 'Non renseignée' }}</p>
+                    </div>
+                    <div class="detail-item">
+                      <label>Conjoint(e)</label>
+                      <p>
+                        {{ (user?.nomConjoint || user?.prenomConjoint) ?
+                          user?.prenomConjoint + ' ' + user?.nomConjoint :
+                          'Aucun' }}
+                      </p>
+                    </div>
+                    <div class="detail-item">
+                      <label>Téléphone conjoint</label>
+                      <p>{{ user?.telephoneConjoint || 'Non renseigné' }}</p>
+                    </div>
+                  </div>
+
+                  <div class="verification-status">
+                    <mat-icon [class.verified]="user?.compteVerifie">verified</mat-icon>
+                    <div class="verification-info">
+                      <h3>Compte {{ user?.compteVerifie ? 'Vérifié' : 'En attente' }}</h3>
+                      <p class="status-description">Statut de vérification</p>
+                    </div>
+                  </div>
+
+                  <div class="edit-button-container">
+                    <button
+  mat-raised-button
+  color="accent"
+  class="edit-button"
+  routerLink="edit-profil"
+>
+  <mat-icon>edit</mat-icon>
+  Éditer le profil
+</button>
+                  </div>
+                </div>
+              </div>
+            </mat-tab>
+
+            <mat-tab label="Sécurité">
+              <ng-template mat-tab-label>
+                <mat-icon class="tab-icon">lock_reset</mat-icon>
+                Sécurité
+              </ng-template>
+
+              <div class="tab-content">
+                <div class="security-section">
+                  <h3>🔒 Sécurité du compte</h3>
+
+                  <div *ngIf="successMessage" class="alert alert-success">
+                    {{ successMessage }}
+                  </div>
+                  <div *ngIf="errorMessage" class="alert alert-error">
+                    {{ errorMessage }}
+                  </div>
+
+                  <div class="security-status">
+                    <div class="status-item success">
+                      <mat-icon>check_circle</mat-icon>
+                      <div>
+                        <p>Authentification à deux facteurs</p>
+                        <small>Activée depuis le 15/06/2024</small>
+                      </div>
+                    </div>
+                    <div class="status-item warning">
+                      <mat-icon>warning</mat-icon>
+                      <div>
+                        <p>Mot de passe</p>
+                        <small>Expire dans 15 jours</small>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="password-form">
+                    <h4>Changer le mot de passe</h4>
+                    <form [formGroup]="passwordForm" (ngSubmit)="onPasswordSubmit()">
+                      <mat-form-field appearance="outline">
+                        <mat-label>Ancien mot de passe</mat-label>
+                        <input matInput type="password" formControlName="oldPassword" required>
+                        <mat-error *ngIf="passwordForm.get('oldPassword')?.hasError('required')">
+                          Champ obligatoire
+                        </mat-error>
+                      </mat-form-field>
+
+                      <mat-form-field appearance="outline">
+                        <mat-label>Nouveau mot de passe</mat-label>
+                        <input matInput type="password" formControlName="newPassword" required>
+                        <mat-hint>8 caractères minimum, avec majuscule et chiffre</mat-hint>
+                        <mat-error *ngIf="passwordForm.get('newPassword')?.hasError('required')">
+                          Champ obligatoire
+                        </mat-error>
+                        <mat-error *ngIf="passwordForm.get('newPassword')?.hasError('minlength')">
+                          Minimum 8 caractères
+                        </mat-error>
+                        <mat-error *ngIf="passwordForm.get('newPassword')?.hasError('pattern')">
+                          Doit contenir une majuscule et un chiffre
+                        </mat-error>
+                      </mat-form-field>
+
+                      <mat-form-field appearance="outline">
+                        <mat-label>Confirmer le mot de passe</mat-label>
+                        <input matInput type="password" formControlName="confirmPassword" required>
+                        <mat-error *ngIf="passwordForm.hasError('mismatch')">
+                          Les mots de passe ne correspondent pas
+                        </mat-error>
+                      </mat-form-field>
+
+                      <button
+                        mat-raised-button
+                        color="primary"
+                        class="save-button"
+                        type="submit"
+                        [disabled]="passwordForm.invalid"
+                      >
+                        <mat-icon>key</mat-icon>
+                        Mettre à jour
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </mat-tab>
+          </mat-tab-group>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
